@@ -12,7 +12,7 @@ class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
-        usuarios: '/api/usuarios',
+        usuarios: '/api/auth',
         productos: '/api/productos'
     }
 

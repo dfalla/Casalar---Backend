@@ -7,7 +7,7 @@ import { validarJWT } from '../middlewares/validar-jwt'
 const router = Router();
 
 router.post('/register', validarCamposRegistro, registerUser );
-router.post('/', validarCamposLogin, loginUser );
+router.post('/login', validarCamposLogin, loginUser );
 router.get('/renew', validarJWT ,revalidarToken);
 
 export default router;

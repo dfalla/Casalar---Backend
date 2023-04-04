@@ -20,7 +20,7 @@ const connection_1 = __importDefault(require("../database/connection"));
 class Server {
     constructor() {
         this.apiPaths = {
-            usuarios: '/api/usuarios',
+            usuarios: '/api/auth',
             productos: '/api/productos'
         };
         this.app = (0, express_1.default)();

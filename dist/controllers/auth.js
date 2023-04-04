@@ -70,7 +70,8 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             ok: true,
             msg: 'Usuario Logueado',
             uid: user.id,
-            name: user.nombre,
+            nombre: user.nombre,
+            apellido: user.apellido,
             token
         });
     }

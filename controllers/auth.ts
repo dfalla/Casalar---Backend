@@ -68,7 +68,8 @@ export const loginUser = async (req: Request, res: Response) => {
         ok:true,
         msg: 'Usuario Logueado',
         uid: user.id,
-        name: user.nombre,
+        nombre: user.nombre,
+        apellido: user.apellido,
         token
     })
    } catch (error) {
