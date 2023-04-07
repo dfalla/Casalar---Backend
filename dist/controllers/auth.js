@@ -22,26 +22,32 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const user = yield user_1.User.findOne({ where: { username: username } });
     if (user) {
         return res.status(400).json({
-            msg: `Ya existe un usuario con el nombre ${username}`
+            msg: `Ya existe un usuario ${username}`
         });
     }
     const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         // Guardarmos usuario en la base de datos
-        yield user_1.User.create({
+        const usuario = yield user_1.User.create({
             nombre,
             apellido,
             username: username,
             password: hashedPassword
         });
+        const token = yield (0, jwt_1.generarJWT)({ uid: usuario.dataValues.id, name: usuario.dataValues.nombre });
         res.json({
-            msg: `Usuario ${username} creado exitosamente!`
+            msg: `Usuario ${username} creado exitosamente!`,
+            nombre: usuario.dataValues.nombre,
+            apellido: usuario.dataValues.apellido,
+            token
         });
     }
     catch (error) {
-        res.status(400).json({
-            msg: 'Upps ocurrio un error',
-            error
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            msg: 'Por favor hable con el administrador'
         });
     }
 });
