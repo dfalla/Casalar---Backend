@@ -32,6 +32,7 @@ exports.getProduct = getProduct;
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const { nombre, descripcion } = body;
+    console.log("file", req.file);
     try {
         const existeProduct = yield product_1.Product.findOne({
             where: {

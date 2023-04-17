@@ -6,6 +6,7 @@ import { generarJWT } from '../helpers/jwt';
 export const registerUser = async (req: Request, res: Response) => {
 
     const { nombre, apellido, username, password } = req.body;
+    console.log({ nombre, apellido, username, password })
 
     // Validamos si el usuario ya existe en la base de datos
     const user = await User.findOne({ where: { username: username } });
@@ -48,6 +49,7 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
 
     const { username, password } = req.body;
+    console.log("login: ", { username, password });
 
    // Validamos si el usuario existe en la base de datos
    try {
@@ -69,7 +71,6 @@ export const loginUser = async (req: Request, res: Response) => {
 
    // Generamos token
    const token = await generarJWT({uid: user.id, name: user.nombre});
-   console.log('token',token)
    
     res.json({
         ok:true,

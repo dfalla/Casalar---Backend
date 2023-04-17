@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const auth_1 = __importDefault(require("../routes/auth"));
 const product_1 = __importDefault(require("../routes/product"));
 const cors_1 = __importDefault(require("cors"));
@@ -35,7 +36,7 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield connection_1.default.authenticate();
-                console.log('Database online');
+                console.log('Base de datos conectada 😍');
             }
             catch (error) {
                 console.log(error);
@@ -47,6 +48,9 @@ class Server {
         this.app.use((0, cors_1.default)());
         // Lectura del body
         this.app.use(express_1.default.json());
+        this.app.use(body_parser_1.default.json());
+        this.app.use(body_parser_1.default.urlencoded());
+        // this.app.use(express.urlencoded({extended: true}));
         // Carpeta pública
         this.app.use(express_1.default.static('public'));
     }

@@ -7,7 +7,7 @@ exports.validarProducto = [
         .isString()
         .trim()
         .notEmpty(),
-    (0, validationResult_1.check)("descripcion", "Ingrese un apellido válido")
+    (0, validationResult_1.check)("descripcion", "Ingrese una descripción válida")
         .trim()
         .notEmpty()
         .isLength({ min: 6, max: 255 }),

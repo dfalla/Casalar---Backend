@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import bodyParser from 'body-parser';
 import userRoutes from '../routes/auth';
 import productosRoutes from '../routes/product';
 
@@ -32,7 +33,7 @@ class Server {
         try {
             
             await db.authenticate();
-            console.log('Database online');
+            console.log('Base de datos conectada 😍');
 
         } catch (error) {
             console.log(error)
@@ -47,6 +48,14 @@ class Server {
 
         // Lectura del body
         this.app.use( express.json() );
+
+        this.app.use(bodyParser.json());
+
+        this.app.use(bodyParser.urlencoded());
+
+
+        // this.app.use(express.urlencoded({extended: true}));
+        
 
         // Carpeta pública
         this.app.use( express.static('public') );

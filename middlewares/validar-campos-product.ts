@@ -6,7 +6,7 @@ export const validarProducto = [
         .isString()
         .trim()
         .notEmpty(),
-    check("descripcion", "Ingrese un apellido válido")
+    check("descripcion", "Ingrese una descripción válida")
         .trim()
         .notEmpty()
         .isLength({min: 6, max: 255}),

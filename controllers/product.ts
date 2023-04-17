@@ -25,6 +25,7 @@ export const getProduct = async (req: Request, res: Response)=>{
 export const createProduct = async (req: Request, res: Response)=>{
     const { body } = req;
     const { nombre, descripcion } = body;
+    console.log("file",req.file);
 
     try {
         

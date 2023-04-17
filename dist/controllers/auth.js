@@ -18,6 +18,7 @@ const user_1 = require("../models/user");
 const jwt_1 = require("../helpers/jwt");
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre, apellido, username, password } = req.body;
+    console.log({ nombre, apellido, username, password });
     // Validamos si el usuario ya existe en la base de datos
     const user = yield user_1.User.findOne({ where: { username: username } });
     if (user) {
@@ -54,6 +55,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.registerUser = registerUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
+    console.log("login: ", { username, password });
     // Validamos si el usuario existe en la base de datos
     try {
         const user = yield user_1.User.findOne({ where: { username: username } });
@@ -71,7 +73,6 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         // Generamos token
         const token = yield (0, jwt_1.generarJWT)({ uid: user.id, name: user.nombre });
-        console.log('token', token);
         res.json({
             ok: true,
             msg: 'Usuario Logueado',
