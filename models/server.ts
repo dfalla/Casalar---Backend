@@ -1,5 +1,4 @@
 import express, { Application } from 'express';
-import bodyParser from 'body-parser';
 import userRoutes from '../routes/auth';
 import productosRoutes from '../routes/product';
 
@@ -22,10 +21,10 @@ class Server {
         this.port = process.env.PORT || '8000';
 
         // Métodos iniciales
-        this.listen();
         this.dbConnection();
         this.middlewares();
         this.routes();
+        this.listen();
     }
 
     async dbConnection() {
@@ -49,13 +48,7 @@ class Server {
         // Lectura del body
         this.app.use( express.json() );
 
-        this.app.use(bodyParser.json());
-
-        this.app.use(bodyParser.urlencoded());
-
-
-        // this.app.use(express.urlencoded({extended: true}));
-        
+        this.app.use(express.urlencoded({extended: true}));
 
         // Carpeta pública
         this.app.use( express.static('public') );

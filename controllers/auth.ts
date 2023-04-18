@@ -49,7 +49,6 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
 
     const { username, password } = req.body;
-    console.log("login: ", { username, password });
 
    // Validamos si el usuario existe en la base de datos
    try {

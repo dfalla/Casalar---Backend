@@ -55,7 +55,6 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.registerUser = registerUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
-    console.log("login: ", { username, password });
     // Validamos si el usuario existe en la base de datos
     try {
         const user = yield user_1.User.findOne({ where: { username: username } });
