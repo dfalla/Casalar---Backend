@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import fileUpload from 'express-fileupload'
 import userRoutes from '../routes/auth';
 import productosRoutes from '../routes/product';
 
@@ -21,10 +22,16 @@ class Server {
         this.port = process.env.PORT || '8000';
 
         // Métodos iniciales
+        this.listen();
         this.dbConnection();
         this.middlewares();
         this.routes();
-        this.listen();
+    }
+
+    listen() {
+        this.app.listen( this.port, () => {
+            console.log('Servidor corriendo en puerto ' + this.port );
+        })
     }
 
     async dbConnection() {
@@ -40,7 +47,16 @@ class Server {
 
     }
 
+    routes() {
+        this.app.use( this.apiPaths.usuarios, userRoutes );
+        this.app.use( this.apiPaths.productos, productosRoutes );
+    }
+
     middlewares() {
+        this.app.use(fileUpload({
+            useTempFiles: true, 
+            tempFileDir: './upload',
+        }))
 
         // CORS
         this.app.use( cors() );
@@ -52,20 +68,7 @@ class Server {
 
         // Carpeta pública
         this.app.use( express.static('public') );
-    }
 
-
-    routes() {
-        this.app.use( this.apiPaths.usuarios, userRoutes );
-        this.app.use( this.apiPaths.productos, productosRoutes );
-
-    }
-
-
-    listen() {
-        this.app.listen( this.port, () => {
-            console.log('Servidor corriendo en puerto ' + this.port );
-        })
     }
 
 }

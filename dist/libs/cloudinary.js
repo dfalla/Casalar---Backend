@@ -21,7 +21,7 @@ const uploadImage = (filePath) => __awaiter(void 0, void 0, void 0, function* ()
     // filePath puede ser el archivo, la ruta donde está el archivo o incluso el string del archivo o un dato crudo del archivo
     //subir el archivo a los servicios de cloudinary
     return yield cloudinary_1.v2.uploader.upload(filePath, {
-        folder: 'students' //nombre de la carpeta que está en cloudinary
+        folder: 'productos' //nombre de la carpeta que está en cloudinary
     });
 });
 exports.uploadImage = uploadImage;

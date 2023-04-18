@@ -8,11 +8,21 @@ const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../database/connection"));
 exports.Product = connection_1.default.define('productos', {
     nombre: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     descripcion: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
+    imagen: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    imagen_public_id: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    }
 }, {
     freezeTableName: true
 });
