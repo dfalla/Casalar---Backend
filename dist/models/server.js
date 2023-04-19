@@ -22,7 +22,7 @@ class Server {
     constructor() {
         this.apiPaths = {
             usuarios: '/api/auth',
-            productos: '/api/productos'
+            productos: '/api/aceites'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';

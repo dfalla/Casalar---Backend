@@ -12,15 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProduct = exports.getProducts = void 0;
+exports.deleteAceite = exports.updateAceite = exports.createAceite = exports.getAceite = exports.getAceites = void 0;
 const Aceite_1 = require("../models/Aceite");
 const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAceites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productos = yield Aceite_1.Product.findAll();
+        const aceites = yield Aceite_1.Aceite.findAll();
         return res.json({
-            productos
+            aceites
         });
     }
     catch (error) {
@@ -30,18 +30,18 @@ const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
-exports.getProducts = getProducts;
-const getProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAceites = getAceites;
+const getAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const producto = yield Aceite_1.Product.findByPk(id);
-        if (!producto) {
+        const aceite = yield Aceite_1.Aceite.findByPk(id);
+        if (!aceite) {
             return res.status(404).json({
-                error: "No existe el producto"
+                error: "No existe el aceite"
             });
         }
         return res.json({
-            producto
+            aceite
         });
     }
     catch (error) {
@@ -51,37 +51,39 @@ const getProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
-exports.getProduct = getProduct;
-const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAceite = getAceite;
+const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nombre, descripcion } = req.body;
+        const { cantidad, marca, precio, stock } = req.body;
         let image;
         let image_public_id;
-        if (req.files.imagen) {
-            const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
-            yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
-            image = result.secure_url;
-            image_public_id = result.public_id;
-        }
         try {
-            const existeProducto = yield Aceite_1.Product.findOne({
+            const existeAceite = yield Aceite_1.Aceite.findOne({
                 where: {
-                    nombre: nombre
+                    marca: marca
                 }
             });
-            if (existeProducto) {
+            if (existeAceite) {
                 return res.status(400).json({
-                    msg: 'Ya existe un producto con esa categoria ' + nombre
+                    msg: `Ya existe un producto con esa marca ${marca}`
                 });
             }
-            yield Aceite_1.Product.create({
-                nombre,
-                descripcion,
+            if (req.files.imagen) {
+                const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
+                yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
+                image = result.secure_url;
+                image_public_id = result.public_id;
+            }
+            yield Aceite_1.Aceite.create({
+                marca,
+                cantidad,
+                precio,
+                stock,
                 imagen: image,
                 imagen_public_id: image_public_id
             });
             res.json({
-                msg: `Producto ${nombre} creado exitosamente!`
+                msg: `El aceite con la marca ${marca} fue registrado exitosamente!`
             });
         }
         catch (error) {
@@ -95,29 +97,31 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.createProduct = createProduct;
-const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createAceite = createAceite;
+const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { nombre, descripcion } = req.body;
+        const { cantidad, marca, precio, stock } = req.body;
         let image;
         let image_public_id;
-        const producto = yield Aceite_1.Product.findByPk(id);
-        if (!producto) {
+        const aceite = yield Aceite_1.Aceite.findByPk(id);
+        if (!aceite) {
             return res.status(404).json({
-                msg: 'No existe un producto con el id ' + id
+                msg: 'No existe un aceite con el id ' + id
             });
         }
-        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
+        yield (0, cloudinary_1.deleteImage)(aceite.dataValues.imagen_public_id);
         if (req.files.imagen) {
             const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
             yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
             image = result.secure_url;
             image_public_id = result.public_id;
         }
-        yield Aceite_1.Product.update({
-            nombre,
-            descripcion,
+        yield Aceite_1.Aceite.update({
+            cantidad,
+            marca,
+            precio,
+            stock,
             imagen: image,
             imagen_public_id: image_public_id,
         }, {
@@ -126,8 +130,8 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             }
         });
         res.json({
-            msg: "producto actualizado correctamente",
-            producto
+            msg: "aceite actualizado correctamente",
+            aceite
         });
     }
     catch (error) {
@@ -137,22 +141,21 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.updateProduct = updateProduct;
-const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateAceite = updateAceite;
+const deleteAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const producto = yield Aceite_1.Product.findByPk(id);
-        if (!producto) {
+        const aceite = yield Aceite_1.Aceite.findByPk(id);
+        if (!aceite) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
             });
         }
-        console.log("producto", producto);
-        yield producto.destroy();
-        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
+        yield aceite.destroy();
+        yield (0, cloudinary_1.deleteImage)(aceite.dataValues.imagen_public_id);
         res.json({
-            msg: "producto eliminado correctamente",
-            producto
+            msg: "Aceite eliminado correctamente",
+            aceite
         });
     }
     catch (error) {
@@ -160,5 +163,5 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(500).json({ error: 'Error de servidor' });
     }
 });
-exports.deleteProduct = deleteProduct;
-//# sourceMappingURL=product.js.map
+exports.deleteAceite = deleteAceite;
+//# sourceMappingURL=aceite.js.map

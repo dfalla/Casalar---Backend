@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from '../controllers/product';
+import { getAceites, getAceite, createAceite, deleteAceite, updateAceite } from '../controllers/aceite';
 import { validarJWT } from "../middlewares/validar-jwt";
-import { validarProducto } from "../middlewares/validar-campos-product";
+import { validarAceite } from "../middlewares/validarCamposProductoAceite";
 
 const router = Router();
 router.use( validarJWT );
 
-router.get('/', getProducts)
-router.get('/:id', getProduct)
-router.post('/', validarProducto,   createProduct)
-router.put('/:id', validarProducto, updateProduct)
-router.delete('/:id', deleteProduct)
+router.get('/', getAceites)
+router.get('/:id', getAceite)
+router.post('/', validarAceite,   createAceite)
+router.put('/:id', validarAceite, updateAceite)
+router.delete('/:id', deleteAceite)
 
 export default router;

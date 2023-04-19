@@ -14,7 +14,7 @@ class Server {
     private port: string;
     private apiPaths = {
         usuarios: '/api/auth',
-        productos: '/api/productos'
+        productos: '/api/aceites'
     }
 
     constructor() {

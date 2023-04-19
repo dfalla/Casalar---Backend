@@ -34,4 +34,4 @@ exports.Product = connection_1.default.define('productos', {
 }, {
     freezeTableName: true
 });
-//# sourceMappingURL=product.js.map
+//# sourceMappingURL=Aceites.js.map
