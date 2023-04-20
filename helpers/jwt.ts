@@ -13,7 +13,7 @@ export const generarJWT =  ({uid, name}: Args) => {
         const payload = { uid, name };
 
         jwt.sign( payload, process.env.SECRET_JWT_SEED || 'Casalar2023', {
-            expiresIn: '2h'
+            expiresIn: '744h'
         }, (err, token) => {
             if( err ) {
                 console.log(err);

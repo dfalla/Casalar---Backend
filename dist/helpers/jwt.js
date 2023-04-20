@@ -9,7 +9,7 @@ const generarJWT = ({ uid, name }) => {
     return new Promise((resolve, reject) => {
         const payload = { uid, name };
         jsonwebtoken_1.default.sign(payload, process.env.SECRET_JWT_SEED || 'Casalar2023', {
-            expiresIn: '2h'
+            expiresIn: '744h'
         }, (err, token) => {
             if (err) {
                 console.log(err);
