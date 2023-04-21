@@ -11,7 +11,7 @@ export const uploadImage = async(filePath: any) => {
     // filePath puede ser el archivo, la ruta donde está el archivo o incluso el string del archivo o un dato crudo del archivo
     //subir el archivo a los servicios de cloudinary
     return await v2.uploader.upload(filePath, {
-        folder: 'motorepuestos/aceites' //nombre de la carpeta que está en cloudinary
+        folder: 'casalar' //nombre de la carpeta que está en cloudinary
     });
 }
 

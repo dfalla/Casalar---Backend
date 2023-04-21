@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import db from '../database/connection';
 
 
-export const Aceite = db.define('aceites', {
+export const LLanta = db.define('llantas', {
     marca: {
         type: DataTypes.STRING,
         allowNull: false

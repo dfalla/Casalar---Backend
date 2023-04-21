@@ -16,7 +16,7 @@ exports.Aceite = connection_1.default.define('aceites', {
         allowNull: false
     },
     precio: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     stock: {
@@ -38,4 +38,4 @@ exports.Aceite = connection_1.default.define('aceites', {
 }, {
     freezeTableName: true
 });
-//# sourceMappingURL=Aceite.js.map
+//# sourceMappingURL=Aceite%20copy.js.map

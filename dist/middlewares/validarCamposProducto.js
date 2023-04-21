@@ -23,4 +23,4 @@ exports.validarProducto = [
         .isLength({ min: 1, max: 255 }),
     validationResult_1.validarCampos,
 ];
-//# sourceMappingURL=validarCamposProductoAceite.js.map
+//# sourceMappingURL=validarCamposProducto.js.map

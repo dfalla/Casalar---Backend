@@ -14,13 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.revalidarToken = exports.loginUser = exports.registerUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const user_1 = require("../models/user");
 const jwt_1 = require("../helpers/jwt");
+const models_1 = require("../models");
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre, apellido, username, password } = req.body;
     console.log({ nombre, apellido, username, password });
     // Validamos si el usuario ya existe en la base de datos
-    const user = yield user_1.User.findOne({ where: { username: username } });
+    const user = yield models_1.User.findOne({ where: { username: username } });
     if (user) {
         return res.status(400).json({
             msg: `Ya existe un usuario ${username}`
@@ -29,7 +29,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         // Guardarmos usuario en la base de datos
-        const usuario = yield user_1.User.create({
+        const usuario = yield models_1.User.create({
             nombre,
             apellido,
             username: username,
@@ -57,7 +57,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
     // Validamos si el usuario existe en la base de datos
     try {
-        const user = yield user_1.User.findOne({ where: { username: username } });
+        const user = yield models_1.User.findOne({ where: { username: username } });
         if (!user) {
             return res.status(400).json({
                 msg: `No existe un usuario con el nombre ${username} en la base datos`

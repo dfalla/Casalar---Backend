@@ -2,14 +2,15 @@ import {Request, Response} from 'express';
 import { Aceite } from '../models/Aceite';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
+import { LLanta } from '../models';
 
 
-export const getAceites = async (req: Request, res: Response)=>{
+export const getLlantas = async (req: Request, res: Response)=>{
 
     try {
-        const aceites = await Aceite.findAll();
+        const llantas = await LLanta.findAll();
         return res.json({
-            aceites
+            llantas
         });
     } catch (error) {
         console.log(error)
@@ -19,19 +20,19 @@ export const getAceites = async (req: Request, res: Response)=>{
     }
 }
 
-export const getAceite = async (req: Request, res: Response)=>{
+export const getLlanta = async (req: Request, res: Response)=>{
     try {
         const { id } = req.params;
-        const aceite = await Aceite.findByPk(id);
+        const llanta = await LLanta.findByPk(id);
 
-        if(!aceite) {
+        if(!llanta) {
              return res.status(404).json({
-                error: "No existe el aceite"
+                error: "No existe el producto"
             });
         }
 
         return res.json({
-            aceite
+            llanta
         })
     } catch (error) {
         console.log(error);
@@ -42,22 +43,23 @@ export const getAceite = async (req: Request, res: Response)=>{
 
 }
 
-export const createAceite = async (req: Request, res: Response)=>{
-    
-    try {
+export const createLlanta = async (req: Request, res: Response)=>{
+
+    console.log("req.body desde el controlador", req.body);
+        try {
 
         const {cantidad, marca, precio, stock, descripcion} = req.body;
         let image;
         let image_public_id;
 
         try {
-            const existeAceite = await Aceite.findOne({
+            const existeLlanta = await LLanta.findOne({
                 where: {
                     marca: marca
                 }
             })
 
-            if(existeAceite){
+            if(existeLlanta){
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -73,7 +75,7 @@ export const createAceite = async (req: Request, res: Response)=>{
                 image_public_id = result.public_id;
             }
 
-            await Aceite.create({
+            await LLanta.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 cantidad,
                 precio: parseFloat(precio),
@@ -84,7 +86,7 @@ export const createAceite = async (req: Request, res: Response)=>{
             })
 
             res.json({
-                msg: `El aceite con la marca ${marca} fue registrado exitosamente!`
+                msg: `La llanta con la marca ${marca} fue registrado exitosamente!`
             })
 
         } catch (error) {
@@ -99,7 +101,7 @@ export const createAceite = async (req: Request, res: Response)=>{
     }
 }
 
-export const updateAceite = async (req: Request, res: Response)=>{
+export const updateLlanta = async (req: Request, res: Response)=>{
     try {
         
         const {id} = req.params;
@@ -108,15 +110,15 @@ export const updateAceite = async (req: Request, res: Response)=>{
         let image;
         let image_public_id;
 
-        const aceite = await Aceite.findByPk(id);
+        const llanta = await LLanta.findByPk(id);
 
-        if(!aceite){
+        if(!llanta){
             return res.status(404).json({
-                msg: 'No existe un aceite con el id ' + id
+                msg: 'No existe una llanta con el id ' + id
             });
         }
 
-        await deleteImage(aceite.dataValues.imagen_public_id)
+        await deleteImage(llanta.dataValues.imagen_public_id)
 
         if(req.files!.imagen){
             const result = await uploadImage(req.files!.imagen.tempFilePath);
@@ -125,7 +127,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
             image_public_id = result.public_id;
         }
 
-        await Aceite.update( 
+        await LLanta.update( 
             {
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 cantidad,
@@ -144,8 +146,8 @@ export const updateAceite = async (req: Request, res: Response)=>{
         
 
         res.json( {
-            msg: "aceite actualizado correctamente",
-            aceite
+            msg: "Llanta actualizado correctamente",
+            llanta
         } );
 
     } catch (error) {
@@ -156,25 +158,25 @@ export const updateAceite = async (req: Request, res: Response)=>{
     }
 }
 
-export const deleteAceite = async (req: Request, res: Response)=>{
+export const deleteLlanta = async (req: Request, res: Response)=>{
     try {
 
         const { id } = req.params;
 
-        const aceite = await Aceite.findByPk( id );
-        if ( !aceite) {
+        const llanta = await LLanta.findByPk( id );
+        if ( !llanta) {
             return res.status(404).json({
-                msg: 'No existe un priducto con el id ' + id
+                msg: 'No existe un producto con el id ' + id
             });
         }
 
-        await aceite.destroy();
+        await llanta.destroy();
 
-        await deleteImage(aceite.dataValues.imagen_public_id)
+        await deleteImage(llanta.dataValues.imagen_public_id)
 
         res.json({
-            msg: "Aceite eliminado correctamente",
-            aceite
+            msg: " Producto llanta eliminado correctamente",
+            llanta
         });
 
     } catch (error) {

@@ -14,15 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
-const auth_1 = __importDefault(require("../routes/auth"));
-const product_1 = __importDefault(require("../routes/product"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../database/connection"));
+const auth_1 = __importDefault(require("../routes/auth"));
+const aceites_1 = __importDefault(require("../routes/aceites"));
+const llantas_1 = __importDefault(require("../routes/llantas"));
 class Server {
     constructor() {
         this.apiPaths = {
-            usuarios: '/api/auth',
-            productos: '/api/aceites'
+            auth: '/api/auth',
+            aceites: '/api/aceites',
+            llantas: '/api/llantas'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -49,8 +51,9 @@ class Server {
         });
     }
     routes() {
-        this.app.use(this.apiPaths.usuarios, auth_1.default);
-        this.app.use(this.apiPaths.productos, product_1.default);
+        this.app.use(this.apiPaths.auth, auth_1.default);
+        this.app.use(this.apiPaths.aceites, aceites_1.default);
+        this.app.use(this.apiPaths.llantas, llantas_1.default);
     }
     middlewares() {
         this.app.use((0, express_fileupload_1.default)({

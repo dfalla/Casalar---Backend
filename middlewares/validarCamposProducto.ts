@@ -1,7 +1,7 @@
 import { validarCampos, check } from "./validationResult";
 
 
-export const validarAceite = [
+export const validarProducto = [
     check("marca", "Ingrese un nombre de marca válido")
         .isString()
         .trim()
@@ -16,5 +16,9 @@ export const validarAceite = [
     check("stock", "Ingrese un si o no ")
         .trim()
         .notEmpty(),
+    check("descripcion", "Ingrese una descripcion ")
+        .trim()
+        .notEmpty()
+        .isLength({min: 1, max: 255}),
     validarCampos,
 ]

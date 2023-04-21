@@ -53,6 +53,7 @@ const getAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getAceite = getAceite;
 const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("req.body desde el controlador", req.body);
     try {
         const { cantidad, marca, precio, stock, descripcion } = req.body;
         let image;
@@ -75,9 +76,9 @@ const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 image_public_id = result.public_id;
             }
             yield Aceite_1.Aceite.create({
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                marca,
                 cantidad,
-                precio: parseFloat(precio),
+                precio,
                 stock,
                 descripcion,
                 imagen: image,
@@ -119,9 +120,9 @@ const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             image_public_id = result.public_id;
         }
         yield Aceite_1.Aceite.update({
-            marca: marca.split('')[0].toUpperCase() + marca.slice(1),
             cantidad,
-            precio: parseFloat(precio),
+            marca,
+            precio,
             stock,
             descripcion,
             imagen: image,
@@ -166,4 +167,4 @@ const deleteAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteAceite = deleteAceite;
-//# sourceMappingURL=aceite.js.map
+//# sourceMappingURL=aceite%20copy.js.map

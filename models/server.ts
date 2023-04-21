@@ -1,20 +1,20 @@
 import express, { Application } from 'express';
 import fileUpload from 'express-fileupload'
-import userRoutes from '../routes/auth';
-import productosRoutes from '../routes/product';
-
 import cors from 'cors';
-
 import db from '../database/connection';
-
+import userRoutes from '../routes/auth';
+import aceitesRoutes from '../routes/aceites';
+import llantasRoutes from '../routes/llantas';
 
 class Server {
 
     private app: Application;
     private port: string;
     private apiPaths = {
-        usuarios: '/api/auth',
-        productos: '/api/aceites'
+        auth: '/api/auth',
+        aceites: '/api/aceites',
+        llantas: '/api/llantas'
+
     }
 
     constructor() {
@@ -48,8 +48,9 @@ class Server {
     }
 
     routes() {
-        this.app.use( this.apiPaths.usuarios, userRoutes );
-        this.app.use( this.apiPaths.productos, productosRoutes );
+        this.app.use( this.apiPaths.auth, userRoutes );
+        this.app.use( this.apiPaths.aceites, aceitesRoutes );
+        this.app.use( this.apiPaths.llantas, llantasRoutes );
     }
 
     middlewares() {
