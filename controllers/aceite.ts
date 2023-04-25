@@ -9,12 +9,12 @@ export const getAceites = async (req: Request, res: Response)=>{
     try {
         const aceites = await Aceite.findAll();
         return res.json({
-            aceites
+            aceites: aceites.reverse()
         });
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            error: 'Error de servidor'
+            error: 'Error de servidor hola'
         });
     }
 }
@@ -46,7 +46,8 @@ export const createAceite = async (req: Request, res: Response)=>{
     
     try {
 
-        const {cantidad, marca, precio, stock, descripcion} = req.body;
+        const {marca, precio, stock, descripcion} = req.body;
+        console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
 
@@ -75,7 +76,6 @@ export const createAceite = async (req: Request, res: Response)=>{
 
             await Aceite.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                cantidad,
                 precio: parseFloat(precio),
                 stock,
                 descripcion,
@@ -103,7 +103,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
     try {
         
         const {id} = req.params;
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { marca, precio, stock, descripcion } = req.body;
 
         let image;
         let image_public_id;
@@ -128,7 +128,6 @@ export const updateAceite = async (req: Request, res: Response)=>{
         await Aceite.update( 
             {
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                cantidad,
                 precio: parseFloat(precio),
                 stock,
                 descripcion,

@@ -7,16 +7,12 @@ export const Aceite = db.define('aceites', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    cantidad: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     precio: {
         type: DataTypes.NUMBER,
         allowNull: false
     },
     stock: {
-        type: DataTypes.STRING,
+        type: DataTypes.NUMBER,
         allowNull: false
     },
     descripcion: {

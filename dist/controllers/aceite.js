@@ -20,13 +20,13 @@ const getAceites = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const aceites = yield Aceite_1.Aceite.findAll();
         return res.json({
-            aceites
+            aceites: aceites.reverse()
         });
     }
     catch (error) {
         console.log(error);
         return res.status(500).json({
-            error: 'Error de servidor'
+            error: 'Error de servidor hola'
         });
     }
 });
@@ -54,7 +54,8 @@ const getAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getAceite = getAceite;
 const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { marca, precio, stock, descripcion } = req.body;
+        console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
         try {
@@ -76,7 +77,6 @@ const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             }
             yield Aceite_1.Aceite.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                cantidad,
                 precio: parseFloat(precio),
                 stock,
                 descripcion,
@@ -102,7 +102,7 @@ exports.createAceite = createAceite;
 const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
         const aceite = yield Aceite_1.Aceite.findByPk(id);
@@ -120,7 +120,6 @@ const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         yield Aceite_1.Aceite.update({
             marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-            cantidad,
             precio: parseFloat(precio),
             stock,
             descripcion,

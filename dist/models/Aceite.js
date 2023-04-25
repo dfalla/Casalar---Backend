@@ -11,16 +11,12 @@ exports.Aceite = connection_1.default.define('aceites', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    cantidad: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
     precio: {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
     },
     stock: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
     },
     descripcion: {
