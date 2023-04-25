@@ -4,34 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Aceite = void 0;
-const sequelize_1 = require("sequelize");
+const constants_1 = require("../constants");
 const connection_1 = __importDefault(require("../database/connection"));
-exports.Aceite = connection_1.default.define('aceites', {
-    marca: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    precio: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
-    },
-    stock: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
-    },
-    descripcion: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    imagen: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    imagen_public_id: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    }
-}, {
+exports.Aceite = connection_1.default.define('aceites', constants_1.product, {
     freezeTableName: true
 });
 //# sourceMappingURL=Aceite.js.map
