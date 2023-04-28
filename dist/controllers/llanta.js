@@ -20,7 +20,7 @@ const getLlantas = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const llantas = yield models_1.LLanta.findAll();
         return res.json({
-            llantas
+            llantas: llantas.reverse()
         });
     }
     catch (error) {

@@ -10,7 +10,7 @@ export const getLlantas = async (req: Request, res: Response)=>{
     try {
         const llantas = await LLanta.findAll();
         return res.json({
-            llantas
+            llantas: llantas.reverse()
         });
     } catch (error) {
         console.log(error)
