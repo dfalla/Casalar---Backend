@@ -5,6 +5,8 @@ import db from '../database/connection';
 import userRoutes from '../routes/auth';
 import aceitesRoutes from '../routes/aceites';
 import llantasRoutes from '../routes/llantas';
+import motoresRoutes from '../routes/motores';
+
 
 class Server {
 
@@ -13,7 +15,8 @@ class Server {
     private apiPaths = {
         auth: '/api/auth',
         aceites: '/api/aceites',
-        llantas: '/api/llantas'
+        llantas: '/api/llantas',
+        motores: '/api/motores'
 
     }
 
@@ -51,6 +54,8 @@ class Server {
         this.app.use( this.apiPaths.auth, userRoutes );
         this.app.use( this.apiPaths.aceites, aceitesRoutes );
         this.app.use( this.apiPaths.llantas, llantasRoutes );
+        this.app.use( this.apiPaths.motores, motoresRoutes );
+
     }
 
     middlewares() {

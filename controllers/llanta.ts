@@ -86,7 +86,7 @@ export const createLlanta = async (req: Request, res: Response)=>{
             })
 
             res.json({
-                msg: `La llanta con la marca ${marca} fue registrado exitosamente!`
+                msg: `Producto registrado exitosamente!`
             })
 
         } catch (error) {
@@ -146,7 +146,7 @@ export const updateLlanta = async (req: Request, res: Response)=>{
         
 
         res.json( {
-            msg: "Llanta actualizado correctamente",
+            msg: "Producto actualizado correctamente",
             llanta
         } );
 
@@ -175,7 +175,7 @@ export const deleteLlanta = async (req: Request, res: Response)=>{
         await deleteImage(llanta.dataValues.imagen_public_id)
 
         res.json({
-            msg: " Producto llanta eliminado correctamente",
+            msg: " Producto eliminado correctamente",
             llanta
         });
 

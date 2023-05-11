@@ -19,12 +19,14 @@ const connection_1 = __importDefault(require("../database/connection"));
 const auth_1 = __importDefault(require("../routes/auth"));
 const aceites_1 = __importDefault(require("../routes/aceites"));
 const llantas_1 = __importDefault(require("../routes/llantas"));
+const motores_1 = __importDefault(require("../routes/motores"));
 class Server {
     constructor() {
         this.apiPaths = {
             auth: '/api/auth',
             aceites: '/api/aceites',
-            llantas: '/api/llantas'
+            llantas: '/api/llantas',
+            motores: '/api/motores'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -54,6 +56,7 @@ class Server {
         this.app.use(this.apiPaths.auth, auth_1.default);
         this.app.use(this.apiPaths.aceites, aceites_1.default);
         this.app.use(this.apiPaths.llantas, llantas_1.default);
+        this.app.use(this.apiPaths.motores, motores_1.default);
     }
     middlewares() {
         this.app.use((0, express_fileupload_1.default)({

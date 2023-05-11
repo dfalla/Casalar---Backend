@@ -1,15 +1,15 @@
 import {Request, Response} from 'express';
-import { Aceite } from '../models/Aceite';
+import { Motor } from '../models/Motor';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
 
 
-export const getAceites = async (req: Request, res: Response)=>{
+export const getMotores = async (req: Request, res: Response)=>{
 
     try {
-        const aceites = await Aceite.findAll();
+        const motores = await Motor.findAll();
         return res.json({
-            aceites: aceites.reverse()
+            motores: motores.reverse()
         });
     } catch (error) {
         console.log(error)
@@ -19,19 +19,19 @@ export const getAceites = async (req: Request, res: Response)=>{
     }
 }
 
-export const getAceite = async (req: Request, res: Response)=>{
+export const getMotor = async (req: Request, res: Response)=>{
     try {
         const { id } = req.params;
-        const aceite = await Aceite.findByPk(id);
+        const motor = await Motor.findByPk(id);
 
-        if(!aceite) {
+        if(!motor) {
              return res.status(404).json({
-                error: "No existe el aceite"
+                error: "No existe el motor"
             });
         }
 
         return res.json({
-            aceite
+            motor
         })
     } catch (error) {
         console.log(error);
@@ -42,7 +42,7 @@ export const getAceite = async (req: Request, res: Response)=>{
 
 }
 
-export const createAceite = async (req: Request, res: Response)=>{
+export const createMotor = async (req: Request, res: Response)=>{
     
     try {
 
@@ -52,13 +52,13 @@ export const createAceite = async (req: Request, res: Response)=>{
         let image_public_id;
 
         try {
-            const existeAceite = await Aceite.findOne({
+            const existeMotor = await Motor.findOne({
                 where: {
                     marca: marca
                 }
             })
 
-            if(existeAceite){
+            if(existeMotor){
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -74,7 +74,7 @@ export const createAceite = async (req: Request, res: Response)=>{
                 image_public_id = result.public_id;
             }
 
-            await Aceite.create({
+            await Motor.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -99,7 +99,7 @@ export const createAceite = async (req: Request, res: Response)=>{
     }
 }
 
-export const updateAceite = async (req: Request, res: Response)=>{
+export const updateMotor = async (req: Request, res: Response)=>{
     try {
         
         const {id} = req.params;
@@ -108,15 +108,15 @@ export const updateAceite = async (req: Request, res: Response)=>{
         let image;
         let image_public_id;
 
-        const aceite = await Aceite.findByPk(id);
+        const motor = await Motor.findByPk(id);
 
-        if(!aceite){
+        if(!motor){
             return res.status(404).json({
-                msg: 'No existe un aceite con el id ' + id
+                msg: 'No existe un motor con el id ' + id
             });
         }
 
-        await deleteImage(aceite.dataValues.imagen_public_id)
+        await deleteImage(motor.dataValues.imagen_public_id)
 
         if(req.files!.imagen){
             const result = await uploadImage(req.files!.imagen.tempFilePath);
@@ -125,7 +125,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
             image_public_id = result.public_id;
         }
 
-        await Aceite.update( 
+        await Motor.update( 
             {
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
@@ -144,7 +144,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
 
         res.json( {
             msg: "Producto actualizado correctamente",
-            aceite
+            motor
         } );
 
     } catch (error) {
@@ -155,25 +155,25 @@ export const updateAceite = async (req: Request, res: Response)=>{
     }
 }
 
-export const deleteAceite = async (req: Request, res: Response)=>{
+export const deleteMotor = async (req: Request, res: Response)=>{
     try {
 
         const { id } = req.params;
 
-        const aceite = await Aceite.findByPk( id );
-        if ( !aceite) {
+        const motor = await Motor.findByPk( id );
+        if ( !motor) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
             });
         }
 
-        await aceite.destroy();
+        await motor.destroy();
 
-        await deleteImage(aceite.dataValues.imagen_public_id)
+        await deleteImage(motor.dataValues.imagen_public_id)
 
         res.json({
             msg: "Producto eliminado correctamente",
-            aceite
+            motor
         });
 
     } catch (error) {

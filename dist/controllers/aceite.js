@@ -84,7 +84,7 @@ const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 imagen_public_id: image_public_id
             });
             res.json({
-                msg: `El aceite con la marca ${marca} fue registrado exitosamente!`
+                msg: `Producto registrado exitosamente!`
             });
         }
         catch (error) {
@@ -131,7 +131,7 @@ const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             }
         });
         res.json({
-            msg: "aceite actualizado correctamente",
+            msg: "Producto actualizado correctamente",
             aceite
         });
     }
@@ -155,7 +155,7 @@ const deleteAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         yield aceite.destroy();
         yield (0, cloudinary_1.deleteImage)(aceite.dataValues.imagen_public_id);
         res.json({
-            msg: "Aceite eliminado correctamente",
+            msg: "Producto eliminado correctamente",
             aceite
         });
     }

@@ -12,36 +12,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteLlanta = exports.updateLlanta = exports.createLlanta = exports.getLlanta = exports.getLlantas = void 0;
+exports.deleteMotor = exports.updateMotor = exports.createMotor = exports.getMotor = exports.getMotores = void 0;
+const Motor_1 = require("../models/Motor");
 const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const models_1 = require("../models");
-const getLlantas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getMotores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const llantas = yield models_1.LLanta.findAll();
+        const motores = yield Motor_1.Motor.findAll();
         return res.json({
-            llantas: llantas.reverse()
+            motores: motores.reverse()
         });
     }
     catch (error) {
         console.log(error);
         return res.status(500).json({
-            error: 'Error de servidor'
+            error: 'Error de servidor hola'
         });
     }
 });
-exports.getLlantas = getLlantas;
-const getLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getMotores = getMotores;
+const getMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const llanta = yield models_1.LLanta.findByPk(id);
-        if (!llanta) {
+        const motor = yield Motor_1.Motor.findByPk(id);
+        if (!motor) {
             return res.status(404).json({
-                error: "No existe el producto"
+                error: "No existe el motor"
             });
         }
         return res.json({
-            llanta
+            motor
         });
     }
     catch (error) {
@@ -51,20 +51,20 @@ const getLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 });
-exports.getLlanta = getLlanta;
-const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("req.body desde el controlador", req.body);
+exports.getMotor = getMotor;
+const createMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { marca, precio, stock, descripcion } = req.body;
+        console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
         try {
-            const existeLlanta = yield models_1.LLanta.findOne({
+            const existeMotor = yield Motor_1.Motor.findOne({
                 where: {
                     marca: marca
                 }
             });
-            if (existeLlanta) {
+            if (existeMotor) {
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -75,9 +75,8 @@ const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 image = result.secure_url;
                 image_public_id = result.public_id;
             }
-            yield models_1.LLanta.create({
+            yield Motor_1.Motor.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                cantidad,
                 precio: parseFloat(precio),
                 stock,
                 descripcion,
@@ -99,29 +98,28 @@ const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 });
-exports.createLlanta = createLlanta;
-const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createMotor = createMotor;
+const updateMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const llanta = yield models_1.LLanta.findByPk(id);
-        if (!llanta) {
+        const motor = yield Motor_1.Motor.findByPk(id);
+        if (!motor) {
             return res.status(404).json({
-                msg: 'No existe una llanta con el id ' + id
+                msg: 'No existe un motor con el id ' + id
             });
         }
-        yield (0, cloudinary_1.deleteImage)(llanta.dataValues.imagen_public_id);
+        yield (0, cloudinary_1.deleteImage)(motor.dataValues.imagen_public_id);
         if (req.files.imagen) {
             const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
             yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
             image = result.secure_url;
             image_public_id = result.public_id;
         }
-        yield models_1.LLanta.update({
+        yield Motor_1.Motor.update({
             marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-            cantidad,
             precio: parseFloat(precio),
             stock,
             descripcion,
@@ -134,7 +132,7 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         res.json({
             msg: "Producto actualizado correctamente",
-            llanta
+            motor
         });
     }
     catch (error) {
@@ -144,21 +142,21 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 });
-exports.updateLlanta = updateLlanta;
-const deleteLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateMotor = updateMotor;
+const deleteMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const llanta = yield models_1.LLanta.findByPk(id);
-        if (!llanta) {
+        const motor = yield Motor_1.Motor.findByPk(id);
+        if (!motor) {
             return res.status(404).json({
-                msg: 'No existe un producto con el id ' + id
+                msg: 'No existe un priducto con el id ' + id
             });
         }
-        yield llanta.destroy();
-        yield (0, cloudinary_1.deleteImage)(llanta.dataValues.imagen_public_id);
+        yield motor.destroy();
+        yield (0, cloudinary_1.deleteImage)(motor.dataValues.imagen_public_id);
         res.json({
-            msg: " Producto eliminado correctamente",
-            llanta
+            msg: "Producto eliminado correctamente",
+            motor
         });
     }
     catch (error) {
@@ -166,5 +164,5 @@ const deleteLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return res.status(500).json({ error: 'Error de servidor' });
     }
 });
-exports.deleteLlanta = deleteLlanta;
-//# sourceMappingURL=llanta.js.map
+exports.deleteMotor = deleteMotor;
+//# sourceMappingURL=motor.js.map
