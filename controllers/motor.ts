@@ -7,9 +7,9 @@ import fs from 'fs-extra';
 export const getMotores = async (req: Request, res: Response)=>{
 
     try {
-        const motores = await Motor.findAll();
+        const productos = await Motor.findAll();
         return res.json({
-            motores: motores.reverse()
+            productos: productos.reverse()
         });
     } catch (error) {
         console.log(error)
@@ -22,16 +22,16 @@ export const getMotores = async (req: Request, res: Response)=>{
 export const getMotor = async (req: Request, res: Response)=>{
     try {
         const { id } = req.params;
-        const motor = await Motor.findByPk(id);
+        const producto = await Motor.findByPk(id);
 
-        if(!motor) {
+        if(!producto) {
              return res.status(404).json({
-                error: "No existe el motor"
+                error: "No existe el producto"
             });
         }
 
         return res.json({
-            motor
+            producto
         })
     } catch (error) {
         console.log(error);
@@ -52,13 +52,13 @@ export const createMotor = async (req: Request, res: Response)=>{
         let image_public_id;
 
         try {
-            const existeMotor = await Motor.findOne({
+            const existeProducto = await Motor.findOne({
                 where: {
                     marca: marca
                 }
             })
 
-            if(existeMotor){
+            if(existeProducto){
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -108,15 +108,15 @@ export const updateMotor = async (req: Request, res: Response)=>{
         let image;
         let image_public_id;
 
-        const motor = await Motor.findByPk(id);
+        const producto = await Motor.findByPk(id);
 
-        if(!motor){
+        if(!producto){
             return res.status(404).json({
-                msg: 'No existe un motor con el id ' + id
+                msg: 'No existe un producto con el id ' + id
             });
         }
 
-        await deleteImage(motor.dataValues.imagen_public_id)
+        await deleteImage(producto.dataValues.imagen_public_id)
 
         if(req.files!.imagen){
             const result = await uploadImage(req.files!.imagen.tempFilePath);
@@ -160,20 +160,20 @@ export const deleteMotor = async (req: Request, res: Response)=>{
 
         const { id } = req.params;
 
-        const motor = await Motor.findByPk( id );
-        if ( !motor) {
+        const producto = await Motor.findByPk( id );
+        if ( !producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
             });
         }
 
-        await motor.destroy();
+        await producto.destroy();
 
-        await deleteImage(motor.dataValues.imagen_public_id)
+        await deleteImage(producto.dataValues.imagen_public_id)
 
         res.json({
             msg: "Producto eliminado correctamente",
-            motor
+            producto
         });
 
     } catch (error) {

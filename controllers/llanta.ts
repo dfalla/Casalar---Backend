@@ -8,9 +8,9 @@ import { LLanta } from '../models';
 export const getLlantas = async (req: Request, res: Response)=>{
 
     try {
-        const llantas = await LLanta.findAll();
+        const productos = await LLanta.findAll();
         return res.json({
-            llantas: llantas.reverse()
+            productos: productos.reverse()
         });
     } catch (error) {
         console.log(error)
@@ -23,16 +23,16 @@ export const getLlantas = async (req: Request, res: Response)=>{
 export const getLlanta = async (req: Request, res: Response)=>{
     try {
         const { id } = req.params;
-        const llanta = await LLanta.findByPk(id);
+        const producto = await LLanta.findByPk(id);
 
-        if(!llanta) {
+        if(!producto) {
              return res.status(404).json({
                 error: "No existe el producto"
             });
         }
 
         return res.json({
-            llanta
+            producto
         })
     } catch (error) {
         console.log(error);
@@ -53,13 +53,13 @@ export const createLlanta = async (req: Request, res: Response)=>{
         let image_public_id;
 
         try {
-            const existeLlanta = await LLanta.findOne({
+            const existeProducto = await LLanta.findOne({
                 where: {
                     marca: marca
                 }
             })
 
-            if(existeLlanta){
+            if(existeProducto){
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -110,15 +110,15 @@ export const updateLlanta = async (req: Request, res: Response)=>{
         let image;
         let image_public_id;
 
-        const llanta = await LLanta.findByPk(id);
+        const producto = await LLanta.findByPk(id);
 
-        if(!llanta){
+        if(!producto){
             return res.status(404).json({
-                msg: 'No existe una llanta con el id ' + id
+                msg: 'No existe una producto con el id ' + id
             });
         }
 
-        await deleteImage(llanta.dataValues.imagen_public_id)
+        await deleteImage(producto.dataValues.imagen_public_id)
 
         if(req.files!.imagen){
             const result = await uploadImage(req.files!.imagen.tempFilePath);
@@ -147,7 +147,7 @@ export const updateLlanta = async (req: Request, res: Response)=>{
 
         res.json( {
             msg: "Producto actualizado correctamente",
-            llanta
+            producto
         } );
 
     } catch (error) {
@@ -163,20 +163,20 @@ export const deleteLlanta = async (req: Request, res: Response)=>{
 
         const { id } = req.params;
 
-        const llanta = await LLanta.findByPk( id );
-        if ( !llanta) {
+        const producto = await LLanta.findByPk( id );
+        if ( !producto) {
             return res.status(404).json({
                 msg: 'No existe un producto con el id ' + id
             });
         }
 
-        await llanta.destroy();
+        await producto.destroy();
 
-        await deleteImage(llanta.dataValues.imagen_public_id)
+        await deleteImage(producto.dataValues.imagen_public_id)
 
         res.json({
             msg: " Producto eliminado correctamente",
-            llanta
+            producto
         });
 
     } catch (error) {

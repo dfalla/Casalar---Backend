@@ -7,9 +7,9 @@ import fs from 'fs-extra';
 export const getAceites = async (req: Request, res: Response)=>{
 
     try {
-        const aceites = await Aceite.findAll();
+        const productos = await Aceite.findAll();
         return res.json({
-            aceites: aceites.reverse()
+            productos: productos.reverse()
         });
     } catch (error) {
         console.log(error)
@@ -22,16 +22,16 @@ export const getAceites = async (req: Request, res: Response)=>{
 export const getAceite = async (req: Request, res: Response)=>{
     try {
         const { id } = req.params;
-        const aceite = await Aceite.findByPk(id);
+        const producto = await Aceite.findByPk(id);
 
-        if(!aceite) {
+        if(!producto) {
              return res.status(404).json({
-                error: "No existe el aceite"
+                error: "No existe el producto"
             });
         }
 
         return res.json({
-            aceite
+            producto
         })
     } catch (error) {
         console.log(error);
@@ -52,13 +52,13 @@ export const createAceite = async (req: Request, res: Response)=>{
         let image_public_id;
 
         try {
-            const existeAceite = await Aceite.findOne({
+            const existeProducto = await Aceite.findOne({
                 where: {
                     marca: marca
                 }
             })
 
-            if(existeAceite){
+            if(existeProducto){
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -108,15 +108,15 @@ export const updateAceite = async (req: Request, res: Response)=>{
         let image;
         let image_public_id;
 
-        const aceite = await Aceite.findByPk(id);
+        const producto = await Aceite.findByPk(id);
 
-        if(!aceite){
+        if(!producto){
             return res.status(404).json({
-                msg: 'No existe un aceite con el id ' + id
+                msg: 'No existe un producto con el id ' + id
             });
         }
 
-        await deleteImage(aceite.dataValues.imagen_public_id)
+        await deleteImage(producto.dataValues.imagen_public_id)
 
         if(req.files!.imagen){
             const result = await uploadImage(req.files!.imagen.tempFilePath);
@@ -125,7 +125,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
             image_public_id = result.public_id;
         }
 
-        await Aceite.update( 
+        await producto.update( 
             {
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
@@ -144,7 +144,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
 
         res.json( {
             msg: "Producto actualizado correctamente",
-            aceite
+            producto
         } );
 
     } catch (error) {
@@ -160,20 +160,20 @@ export const deleteAceite = async (req: Request, res: Response)=>{
 
         const { id } = req.params;
 
-        const aceite = await Aceite.findByPk( id );
-        if ( !aceite) {
+        const producto = await Aceite.findByPk( id );
+        if ( !producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
             });
         }
 
-        await aceite.destroy();
+        await producto.destroy();
 
-        await deleteImage(aceite.dataValues.imagen_public_id)
+        await deleteImage(producto.dataValues.imagen_public_id)
 
         res.json({
             msg: "Producto eliminado correctamente",
-            aceite
+            producto
         });
 
     } catch (error) {
