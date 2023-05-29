@@ -18,9 +18,9 @@ const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const getAceites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const aceites = yield Aceite_1.Aceite.findAll();
+        const productos = yield Aceite_1.Aceite.findAll();
         return res.json({
-            aceites: aceites.reverse()
+            productos: productos.reverse()
         });
     }
     catch (error) {
@@ -34,14 +34,14 @@ exports.getAceites = getAceites;
 const getAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const aceite = yield Aceite_1.Aceite.findByPk(id);
-        if (!aceite) {
+        const producto = yield Aceite_1.Aceite.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
-                error: "No existe el aceite"
+                error: "No existe el producto"
             });
         }
         return res.json({
-            aceite
+            producto
         });
     }
     catch (error) {
@@ -59,12 +59,12 @@ const createAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         let image;
         let image_public_id;
         try {
-            const existeAceite = yield Aceite_1.Aceite.findOne({
+            const existeProducto = yield Aceite_1.Aceite.findOne({
                 where: {
                     marca: marca
                 }
             });
-            if (existeAceite) {
+            if (existeProducto) {
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -105,20 +105,20 @@ const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const aceite = yield Aceite_1.Aceite.findByPk(id);
-        if (!aceite) {
+        const producto = yield Aceite_1.Aceite.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
-                msg: 'No existe un aceite con el id ' + id
+                msg: 'No existe un producto con el id ' + id
             });
         }
-        yield (0, cloudinary_1.deleteImage)(aceite.dataValues.imagen_public_id);
+        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
         if (req.files.imagen) {
             const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
             yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
             image = result.secure_url;
             image_public_id = result.public_id;
         }
-        yield Aceite_1.Aceite.update({
+        yield producto.update({
             marca: marca.split('')[0].toUpperCase() + marca.slice(1),
             precio: parseFloat(precio),
             stock,
@@ -132,7 +132,7 @@ const updateAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         res.json({
             msg: "Producto actualizado correctamente",
-            aceite
+            producto
         });
     }
     catch (error) {
@@ -146,17 +146,17 @@ exports.updateAceite = updateAceite;
 const deleteAceite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const aceite = yield Aceite_1.Aceite.findByPk(id);
-        if (!aceite) {
+        const producto = yield Aceite_1.Aceite.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
             });
         }
-        yield aceite.destroy();
-        yield (0, cloudinary_1.deleteImage)(aceite.dataValues.imagen_public_id);
+        yield producto.destroy();
+        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
         res.json({
             msg: "Producto eliminado correctamente",
-            aceite
+            producto
         });
     }
     catch (error) {

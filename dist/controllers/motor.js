@@ -18,9 +18,9 @@ const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const getMotores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const motores = yield Motor_1.Motor.findAll();
+        const productos = yield Motor_1.Motor.findAll();
         return res.json({
-            motores: motores.reverse()
+            productos: productos.reverse()
         });
     }
     catch (error) {
@@ -34,14 +34,14 @@ exports.getMotores = getMotores;
 const getMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const motor = yield Motor_1.Motor.findByPk(id);
-        if (!motor) {
+        const producto = yield Motor_1.Motor.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
-                error: "No existe el motor"
+                error: "No existe el producto"
             });
         }
         return res.json({
-            motor
+            producto
         });
     }
     catch (error) {
@@ -59,12 +59,12 @@ const createMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         let image;
         let image_public_id;
         try {
-            const existeMotor = yield Motor_1.Motor.findOne({
+            const existeProducto = yield Motor_1.Motor.findOne({
                 where: {
                     marca: marca
                 }
             });
-            if (existeMotor) {
+            if (existeProducto) {
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -105,13 +105,13 @@ const updateMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const motor = yield Motor_1.Motor.findByPk(id);
-        if (!motor) {
+        const producto = yield Motor_1.Motor.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
-                msg: 'No existe un motor con el id ' + id
+                msg: 'No existe un producto con el id ' + id
             });
         }
-        yield (0, cloudinary_1.deleteImage)(motor.dataValues.imagen_public_id);
+        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
         if (req.files.imagen) {
             const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
             yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
@@ -132,7 +132,7 @@ const updateMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
         res.json({
             msg: "Producto actualizado correctamente",
-            motor
+            producto
         });
     }
     catch (error) {
@@ -146,17 +146,17 @@ exports.updateMotor = updateMotor;
 const deleteMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const motor = yield Motor_1.Motor.findByPk(id);
-        if (!motor) {
+        const producto = yield Motor_1.Motor.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
             });
         }
-        yield motor.destroy();
-        yield (0, cloudinary_1.deleteImage)(motor.dataValues.imagen_public_id);
+        yield producto.destroy();
+        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
         res.json({
             msg: "Producto eliminado correctamente",
-            motor
+            producto
         });
     }
     catch (error) {

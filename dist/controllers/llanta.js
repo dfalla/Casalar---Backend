@@ -18,9 +18,9 @@ const fs_extra_1 = __importDefault(require("fs-extra"));
 const models_1 = require("../models");
 const getLlantas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const llantas = yield models_1.LLanta.findAll();
+        const productos = yield models_1.LLanta.findAll();
         return res.json({
-            llantas: llantas.reverse()
+            productos: productos.reverse()
         });
     }
     catch (error) {
@@ -34,14 +34,14 @@ exports.getLlantas = getLlantas;
 const getLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const llanta = yield models_1.LLanta.findByPk(id);
-        if (!llanta) {
+        const producto = yield models_1.LLanta.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
                 error: "No existe el producto"
             });
         }
         return res.json({
-            llanta
+            producto
         });
     }
     catch (error) {
@@ -59,12 +59,12 @@ const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         let image;
         let image_public_id;
         try {
-            const existeLlanta = yield models_1.LLanta.findOne({
+            const existeProducto = yield models_1.LLanta.findOne({
                 where: {
                     marca: marca
                 }
             });
-            if (existeLlanta) {
+            if (existeProducto) {
                 return res.status(400).json({
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
@@ -106,13 +106,13 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { cantidad, marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const llanta = yield models_1.LLanta.findByPk(id);
-        if (!llanta) {
+        const producto = yield models_1.LLanta.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
-                msg: 'No existe una llanta con el id ' + id
+                msg: 'No existe una producto con el id ' + id
             });
         }
-        yield (0, cloudinary_1.deleteImage)(llanta.dataValues.imagen_public_id);
+        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
         if (req.files.imagen) {
             const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
             yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
@@ -134,7 +134,7 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         res.json({
             msg: "Producto actualizado correctamente",
-            llanta
+            producto
         });
     }
     catch (error) {
@@ -148,17 +148,17 @@ exports.updateLlanta = updateLlanta;
 const deleteLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const llanta = yield models_1.LLanta.findByPk(id);
-        if (!llanta) {
+        const producto = yield models_1.LLanta.findByPk(id);
+        if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un producto con el id ' + id
             });
         }
-        yield llanta.destroy();
-        yield (0, cloudinary_1.deleteImage)(llanta.dataValues.imagen_public_id);
+        yield producto.destroy();
+        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
         res.json({
             msg: " Producto eliminado correctamente",
-            llanta
+            producto
         });
     }
     catch (error) {

@@ -144,7 +144,7 @@ export const updateMotor = async (req: Request, res: Response)=>{
 
         res.json( {
             msg: "Producto actualizado correctamente",
-            motor
+            producto
         } );
 
     } catch (error) {
