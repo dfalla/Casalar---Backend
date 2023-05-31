@@ -1,13 +1,13 @@
 import {Request, Response} from 'express';
-import { Motor } from '../models';
+import { Motosierra } from '../models';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
 
 
-export const getMotores = async (req: Request, res: Response)=>{
+export const getMotosierras = async (req: Request, res: Response)=>{
 
     try {
-        const productos = await Motor.findAll();
+        const productos = await Motosierra.findAll();
         return res.json({
             productos: productos.reverse()
         });
@@ -19,10 +19,10 @@ export const getMotores = async (req: Request, res: Response)=>{
     }
 }
 
-export const getMotor = async (req: Request, res: Response)=>{
+export const getMotosierra = async (req: Request, res: Response)=>{
     try {
         const { id } = req.params;
-        const producto = await Motor.findByPk(id);
+        const producto = await Motosierra.findByPk(id);
 
         if(!producto) {
              return res.status(404).json({
@@ -42,7 +42,7 @@ export const getMotor = async (req: Request, res: Response)=>{
 
 }
 
-export const createMotor = async (req: Request, res: Response)=>{
+export const createMotosierra = async (req: Request, res: Response)=>{
     
     try {
 
@@ -52,7 +52,7 @@ export const createMotor = async (req: Request, res: Response)=>{
         let image_public_id;
 
         try {
-            const existeProducto = await Motor.findOne({
+            const existeProducto = await Motosierra.findOne({
                 where: {
                     marca: marca
                 }
@@ -74,7 +74,7 @@ export const createMotor = async (req: Request, res: Response)=>{
                 image_public_id = result.public_id;
             }
 
-            await Motor.create({
+            await Motosierra.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -99,7 +99,7 @@ export const createMotor = async (req: Request, res: Response)=>{
     }
 }
 
-export const updateMotor = async (req: Request, res: Response)=>{
+export const updateMotosierra = async (req: Request, res: Response)=>{
     try {
         
         const {id} = req.params;
@@ -108,7 +108,7 @@ export const updateMotor = async (req: Request, res: Response)=>{
         let image;
         let image_public_id;
 
-        const producto = await Motor.findByPk(id);
+        const producto = await Motosierra.findByPk(id);
 
         if(!producto){
             return res.status(404).json({
@@ -125,7 +125,7 @@ export const updateMotor = async (req: Request, res: Response)=>{
             image_public_id = result.public_id;
         }
 
-        await Motor.update( 
+        await producto.update( 
             {
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
@@ -155,12 +155,12 @@ export const updateMotor = async (req: Request, res: Response)=>{
     }
 }
 
-export const deleteMotor = async (req: Request, res: Response)=>{
+export const deleteMotosierra = async (req: Request, res: Response)=>{
     try {
 
         const { id } = req.params;
 
-        const producto = await Motor.findByPk( id );
+        const producto = await Motosierra.findByPk( id );
         if ( !producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id

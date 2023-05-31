@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteMotor = exports.updateMotor = exports.createMotor = exports.getMotor = exports.getMotores = void 0;
+exports.deleteMotosierra = exports.updateMotosierra = exports.createMotosierra = exports.getMotosierra = exports.getMotosierras = void 0;
 const models_1 = require("../models");
 const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const getMotores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getMotosierras = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productos = yield models_1.Motor.findAll();
+        const productos = yield models_1.Motosierra.findAll();
         return res.json({
             productos: productos.reverse()
         });
@@ -30,11 +30,11 @@ const getMotores = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
-exports.getMotores = getMotores;
-const getMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getMotosierras = getMotosierras;
+const getMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const producto = yield models_1.Motor.findByPk(id);
+        const producto = yield models_1.Motosierra.findByPk(id);
         if (!producto) {
             return res.status(404).json({
                 error: "No existe el producto"
@@ -51,15 +51,15 @@ const getMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 });
-exports.getMotor = getMotor;
-const createMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getMotosierra = getMotosierra;
+const createMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { marca, precio, stock, descripcion } = req.body;
         console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
         try {
-            const existeProducto = yield models_1.Motor.findOne({
+            const existeProducto = yield models_1.Motosierra.findOne({
                 where: {
                     marca: marca
                 }
@@ -75,7 +75,7 @@ const createMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 image = result.secure_url;
                 image_public_id = result.public_id;
             }
-            yield models_1.Motor.create({
+            yield models_1.Motosierra.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -98,14 +98,14 @@ const createMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
-exports.createMotor = createMotor;
-const updateMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createMotosierra = createMotosierra;
+const updateMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const producto = yield models_1.Motor.findByPk(id);
+        const producto = yield models_1.Motosierra.findByPk(id);
         if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un producto con el id ' + id
@@ -118,7 +118,7 @@ const updateMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             image = result.secure_url;
             image_public_id = result.public_id;
         }
-        yield models_1.Motor.update({
+        yield producto.update({
             marca: marca.split('')[0].toUpperCase() + marca.slice(1),
             precio: parseFloat(precio),
             stock,
@@ -142,11 +142,11 @@ const updateMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
-exports.updateMotor = updateMotor;
-const deleteMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateMotosierra = updateMotosierra;
+const deleteMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const producto = yield models_1.Motor.findByPk(id);
+        const producto = yield models_1.Motosierra.findByPk(id);
         if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id
@@ -164,5 +164,5 @@ const deleteMotor = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(500).json({ error: 'Error de servidor' });
     }
 });
-exports.deleteMotor = deleteMotor;
-//# sourceMappingURL=motor.js.map
+exports.deleteMotosierra = deleteMotosierra;
+//# sourceMappingURL=motosierra.js.map

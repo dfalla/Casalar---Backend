@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteMochila = exports.updateMochila = exports.createMochila = exports.getMochila = exports.getMochilas = void 0;
 const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const Fumigadora_1 = require("../models/Fumigadora");
+const models_1 = require("../models");
 const getMochilas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productos = yield Fumigadora_1.Fumigadora.findAll();
+        const productos = yield models_1.Fumigadora.findAll();
         return res.json({
             productos: productos.reverse()
         });
@@ -34,7 +34,7 @@ exports.getMochilas = getMochilas;
 const getMochila = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const producto = yield Fumigadora_1.Fumigadora.findByPk(id);
+        const producto = yield models_1.Fumigadora.findByPk(id);
         if (!producto) {
             return res.status(404).json({
                 error: "No existe el producto"
@@ -59,7 +59,7 @@ const createMochila = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         let image;
         let image_public_id;
         try {
-            const existeProducto = yield Fumigadora_1.Fumigadora.findOne({
+            const existeProducto = yield models_1.Fumigadora.findOne({
                 where: {
                     marca: marca
                 }
@@ -75,7 +75,7 @@ const createMochila = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 image = result.secure_url;
                 image_public_id = result.public_id;
             }
-            yield Fumigadora_1.Fumigadora.create({
+            yield models_1.Fumigadora.create({
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -105,7 +105,7 @@ const updateMochila = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const producto = yield Fumigadora_1.Fumigadora.findByPk(id);
+        const producto = yield models_1.Fumigadora.findByPk(id);
         if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un producto con el id ' + id
@@ -118,7 +118,7 @@ const updateMochila = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             image = result.secure_url;
             image_public_id = result.public_id;
         }
-        yield Fumigadora_1.Fumigadora.update({
+        yield models_1.Fumigadora.update({
             marca: marca.split('')[0].toUpperCase() + marca.slice(1),
             precio: parseFloat(precio),
             stock,
@@ -146,7 +146,7 @@ exports.updateMochila = updateMochila;
 const deleteMochila = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const producto = yield Fumigadora_1.Fumigadora.findByPk(id);
+        const producto = yield models_1.Fumigadora.findByPk(id);
         if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un priducto con el id ' + id

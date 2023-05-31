@@ -1,5 +1,4 @@
 import {Request, Response} from 'express';
-import { Aceite } from '../models/Aceite';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
 import { LLanta } from '../models';

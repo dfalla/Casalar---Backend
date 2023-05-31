@@ -7,6 +7,7 @@ import aceitesRoutes from '../routes/aceites';
 import llantasRoutes from '../routes/llantas';
 import motoresRoutes from '../routes/motores';
 import mochilasFumigadorasRoutes from '../routes/mochilaFumigadoras';
+import motosierrasRoutes from '../routes/motosierras';
 
 
 
@@ -15,11 +16,12 @@ class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
-        auth     : '/api/auth',
-        aceites  : '/api/aceites',
-        llantas  : '/api/llantas',
-        motores  : '/api/motores',
-        mochilas : '/api/mochilas_fumigadoras'
+        auth        : '/api/auth',
+        aceites     : '/api/aceites',
+        llantas     : '/api/llantas',
+        motores     : '/api/motores',
+        mochilas    : '/api/mochilas_fumigadoras',
+        motosierras : '/api/motosierras'
 
     }
 
@@ -59,6 +61,8 @@ class Server {
         this.app.use( this.apiPaths.llantas, llantasRoutes );
         this.app.use( this.apiPaths.motores, motoresRoutes );
         this.app.use( this.apiPaths.mochilas, mochilasFumigadorasRoutes );
+        this.app.use( this.apiPaths.motosierras, motosierrasRoutes );
+
     }
 
     middlewares() {

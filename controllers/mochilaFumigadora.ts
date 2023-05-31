@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
-import { Fumigadora } from '../models/Fumigadora';
+import { Fumigadora } from '../models';
 
 
 export const getMochilas = async (req: Request, res: Response)=>{
