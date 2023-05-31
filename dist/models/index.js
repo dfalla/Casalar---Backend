@@ -20,6 +20,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Aceite"), exports);
 __exportStar(require("./Fumigadora"), exports);
 __exportStar(require("./LLanta"), exports);
+__exportStar(require("./Motoguadana"), exports);
 __exportStar(require("./Motor"), exports);
 __exportStar(require("./Motosierra"), exports);
 __exportStar(require("./user"), exports);
