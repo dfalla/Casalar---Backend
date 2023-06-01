@@ -17,6 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+__exportStar(require("./AccesorioElectrico"), exports);
 __exportStar(require("./Aceite"), exports);
 __exportStar(require("./Fumigadora"), exports);
 __exportStar(require("./LLanta"), exports);

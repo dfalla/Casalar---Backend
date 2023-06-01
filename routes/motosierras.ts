@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createMotosierra, deleteMotosierra, getMotosierra, getMotosierras, updateMotosierra } from '../controllers/motosierra';
+import { createMotosierra, deleteMotosierra, getMotosierra, getMotosierras, updateMotosierra } from '../controllers';
 import { validarJWT } from "../middlewares/validar-jwt";
 import { validarProducto } from "../middlewares/validarCamposProducto";
 

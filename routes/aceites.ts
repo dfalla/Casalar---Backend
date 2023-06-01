@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAceites, getAceite, createAceite, deleteAceite, updateAceite } from '../controllers/aceite';
+import { getAceites, getAceite, createAceite, deleteAceite, updateAceite } from '../controllers';
 import { validarJWT } from "../middlewares/validar-jwt";
 import { validarProducto } from "../middlewares/validarCamposProducto";
 

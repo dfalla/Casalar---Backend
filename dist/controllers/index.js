@@ -14,10 +14,12 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+__exportStar(require("./accesorioElectrico"), exports);
 __exportStar(require("./aceite"), exports);
 __exportStar(require("./auth"), exports);
 __exportStar(require("./llanta"), exports);
 __exportStar(require("./mochilaFumigadora"), exports);
+__exportStar(require("./motoguadana"), exports);
 __exportStar(require("./motor"), exports);
 __exportStar(require("./motosierra"), exports);
 //# sourceMappingURL=index.js.map

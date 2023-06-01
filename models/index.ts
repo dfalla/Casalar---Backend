@@ -1,3 +1,4 @@
+export * from './AccesorioElectrico';
 export * from './Aceite';
 export * from './Fumigadora';
 export * from './LLanta';

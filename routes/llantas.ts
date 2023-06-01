@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createLlanta, deleteLlanta, getLlanta, getLlantas, updateLlanta } from '../controllers/llanta';
+import { createLlanta, deleteLlanta, getLlanta, getLlantas, updateLlanta } from '../controllers';
 import { validarJWT } from "../middlewares/validar-jwt";
 import { validarProducto } from "../middlewares/validarCamposProducto";
 

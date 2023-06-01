@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createMotoguadana, deleteMotoguadana, getMotoguadana, getMotoguadanas, updateMotoguadana } from '../controllers/motoguadana';
+import { createMotoguadana, deleteMotoguadana, getMotoguadana, getMotoguadanas, updateMotoguadana } from '../controllers';
 import { validarJWT } from "../middlewares/validar-jwt";
 import { validarProducto } from "../middlewares/validarCamposProducto";
 

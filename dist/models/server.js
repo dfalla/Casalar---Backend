@@ -23,6 +23,7 @@ const motores_1 = __importDefault(require("../routes/motores"));
 const mochilaFumigadoras_1 = __importDefault(require("../routes/mochilaFumigadoras"));
 const motosierras_1 = __importDefault(require("../routes/motosierras"));
 const motoguadanas_1 = __importDefault(require("../routes/motoguadanas"));
+const accesoriosElectricos_1 = __importDefault(require("../routes/accesoriosElectricos"));
 class Server {
     constructor() {
         this.apiPaths = {
@@ -32,7 +33,8 @@ class Server {
             motores: '/api/motores',
             fumigadoras: '/api/fumigadoras',
             motosierras: '/api/motosierras',
-            motoguadanas: '/api/motoguadanas'
+            motoguadanas: '/api/motoguadanas',
+            accesoriosElectricos: '/api/accesorios-electricos'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -66,6 +68,7 @@ class Server {
         this.app.use(this.apiPaths.fumigadoras, mochilaFumigadoras_1.default);
         this.app.use(this.apiPaths.motosierras, motosierras_1.default);
         this.app.use(this.apiPaths.motoguadanas, motoguadanas_1.default);
+        this.app.use(this.apiPaths.accesoriosElectricos, accesoriosElectricos_1.default);
     }
     middlewares() {
         this.app.use((0, express_fileupload_1.default)({

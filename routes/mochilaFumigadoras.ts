@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createMochila, deleteMochila, getMochila, getMochilas, updateMochila } from '../controllers/mochilaFumigadora';
+import { createMochila, deleteMochila, getMochila, getMochilas, updateMochila } from '../controllers';
 import { validarJWT } from "../middlewares/validar-jwt";
 import { validarProducto } from "../middlewares/validarCamposProducto";
 

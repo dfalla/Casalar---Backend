@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createMotor, deleteMotor, getMotor, getMotores, updateMotor } from '../controllers/motor';
+import { createMotor, deleteMotor, getMotor, getMotores, updateMotor } from '../controllers';
 import { validarJWT } from "../middlewares/validar-jwt";
 import { validarProducto } from "../middlewares/validarCamposProducto";
 

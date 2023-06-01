@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginUser, registerUser, revalidarToken } from '../controllers/auth';
+import { loginUser, registerUser, revalidarToken } from '../controllers';
 import { validarCamposRegistro, validarCamposLogin } from '../middlewares/validar-campos';
 import { validarJWT } from '../middlewares/validar-jwt'
 
