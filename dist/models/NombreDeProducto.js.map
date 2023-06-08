@@ -1,0 +1,1 @@
+{"version":3,"file":"NombreDeProducto.js","sourceRoot":"","sources":["../../models/NombreDeProducto.ts"],"names":[],"mappings":";;;;;;AAAA,yCAAsC;AACtC,wEAAwC;AAG3B,QAAA,cAAc,GAAG,oBAAE,CAAC,MAAM,CAAC,WAAW,EAAE;IACjD,MAAM,EAAE;QACJ,IAAI,EAAE,qBAAS,CAAC,MAAM;QACtB,SAAS,EAAE,KAAK;KACnB;CACJ,EAAE;IACC,eAAe,EAAE,IAAI;CACxB,CAAC,CAAA"}

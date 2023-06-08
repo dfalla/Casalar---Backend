@@ -10,6 +10,8 @@ import mochilasFumigadorasRoutes from '../routes/mochilaFumigadoras';
 import motosierrasRoutes from '../routes/motosierras';
 import motoguadanasRoutes from '../routes/motoguadanas';
 import accesoriosElectricosRoutes from '../routes/accesoriosElectricos';
+import nombresDeProductosRoutes from '../routes/nombreDeProductos';
+
 
 
 
@@ -25,7 +27,9 @@ class Server {
         fumigadoras            : '/api/fumigadoras',
         motosierras            : '/api/motosierras',
         motoguadanas           : '/api/motoguadanas',
-        accesoriosElectricos   : '/api/accesorios-electricos'
+        accesoriosElectricos   : '/api/accesorios-electricos',
+        nombresDeProductos     : '/api/productos'
+
 
 
     }
@@ -69,6 +73,8 @@ class Server {
         this.app.use( this.apiPaths.motosierras, motosierrasRoutes );
         this.app.use( this.apiPaths.motoguadanas, motoguadanasRoutes );
         this.app.use( this.apiPaths.accesoriosElectricos, accesoriosElectricosRoutes );
+        this.app.use( this.apiPaths.nombresDeProductos, nombresDeProductosRoutes );
+
     }
 
     middlewares() {

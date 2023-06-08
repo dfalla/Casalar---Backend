@@ -6,3 +6,4 @@ export * from './mochilaFumigadora';
 export * from './motoguadana';
 export * from './motor';
 export * from './motosierra';
+export * from './nombreDeProducto'

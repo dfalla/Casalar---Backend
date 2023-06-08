@@ -25,6 +25,7 @@ __exportStar(require("./Motoguadana"), exports);
 __exportStar(require("./Motor"), exports);
 __exportStar(require("./Motosierra"), exports);
 __exportStar(require("./user"), exports);
+__exportStar(require("./NombreDeProducto"), exports);
 const server_1 = __importDefault(require("./server"));
 exports.default = server_1.default;
 //# sourceMappingURL=index.js.map

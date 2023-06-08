@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validarProducto = void 0;
+exports.validarNombreDeProducto = exports.validarProducto = void 0;
 const validationResult_1 = require("./validationResult");
 exports.validarProducto = [
     (0, validationResult_1.check)("marca", "Ingrese un nombre de marca válido")
@@ -17,6 +17,13 @@ exports.validarProducto = [
         .trim()
         .notEmpty()
         .isLength({ min: 1, max: 255 }),
+    validationResult_1.validarCampos,
+];
+exports.validarNombreDeProducto = [
+    (0, validationResult_1.check)("nombre", "Ingrese un nombre de marca válido")
+        .isString()
+        .trim()
+        .notEmpty(),
     validationResult_1.validarCampos,
 ];
 //# sourceMappingURL=validarCamposProducto.js.map

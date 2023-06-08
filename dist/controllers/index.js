@@ -22,4 +22,5 @@ __exportStar(require("./mochilaFumigadora"), exports);
 __exportStar(require("./motoguadana"), exports);
 __exportStar(require("./motor"), exports);
 __exportStar(require("./motosierra"), exports);
+__exportStar(require("./nombreDeProducto"), exports);
 //# sourceMappingURL=index.js.map

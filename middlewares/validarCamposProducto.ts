@@ -18,3 +18,11 @@ export const validarProducto = [
         .isLength({min: 1, max: 255}),
     validarCampos,
 ]
+
+export const validarNombreDeProducto = [
+    check("nombre", "Ingrese un nombre de marca válido")
+        .isString()
+        .trim()
+        .notEmpty(),
+    validarCampos,
+]
