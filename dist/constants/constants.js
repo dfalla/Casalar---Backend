@@ -31,7 +31,11 @@ exports.product = {
     imagen_public_id: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
-    }
+    },
+    created_at: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
 };
 exports.accesorio_electrico_product = Object.assign({ id_accesorio_electrico: {
         type: sequelize_1.DataTypes.STRING,

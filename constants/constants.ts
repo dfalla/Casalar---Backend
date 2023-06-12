@@ -29,7 +29,11 @@ export const product = {
     imagen_public_id: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    created_at: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 }
 
 export const accesorio_electrico_product = {

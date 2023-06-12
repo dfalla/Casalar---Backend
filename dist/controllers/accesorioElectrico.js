@@ -16,6 +16,7 @@ exports.deleteAccesorioElectrico = exports.updateAccesorioElectrico = exports.cr
 const models_1 = require("../models");
 const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
+const getFecha_1 = require("../helpers/getFecha");
 const getAccesoriosElectricos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productos = yield models_1.AccesorioElectrico.findAll();
@@ -55,6 +56,7 @@ exports.getAccesorioElectrico = getAccesorioElectrico;
 const createAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_producto, marca, precio, stock, descripcion } = req.body;
+        const fecha = (0, getFecha_1.getFecha)();
         console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
@@ -82,7 +84,8 @@ const createAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0,
                 stock,
                 descripcion,
                 imagen: image,
-                imagen_public_id: image_public_id
+                imagen_public_id: image_public_id,
+                created_at: fecha
             });
             res.json({
                 msg: `Producto registrado exitosamente!`

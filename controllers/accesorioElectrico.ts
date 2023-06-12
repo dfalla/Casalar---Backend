@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import { AccesorioElectrico } from '../models';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
+import { getFecha } from '../helpers/getFecha';
 
 
 export const getAccesoriosElectricos = async (req: Request, res: Response)=>{
@@ -47,6 +48,9 @@ export const createAccesorioElectrico = async (req: Request, res: Response)=>{
     try {
 
         const {id_producto, marca, precio, stock, descripcion} = req.body;
+
+        const fecha = getFecha()
+
         console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
@@ -81,7 +85,8 @@ export const createAccesorioElectrico = async (req: Request, res: Response)=>{
                 stock,
                 descripcion,
                 imagen: image,
-                imagen_public_id: image_public_id
+                imagen_public_id: image_public_id, 
+                created_at: fecha
             })
 
             res.json({
