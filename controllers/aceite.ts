@@ -9,7 +9,7 @@ export const getAceites = async (req: Request, res: Response)=>{
     try {
         const productos = await Aceite.findAll();
         return res.json({
-            productos: productos.reverse()
+            productos
         });
     } catch (error) {
         console.log(error)
@@ -21,8 +21,8 @@ export const getAceites = async (req: Request, res: Response)=>{
 
 export const getAceite = async (req: Request, res: Response)=>{
     try {
-        const { id } = req.params;
-        const producto = await Aceite.findByPk(id);
+        const { id_producto } = req.params;
+        const producto = await Aceite.findByPk(id_producto);
 
         if(!producto) {
              return res.status(404).json({
@@ -46,7 +46,7 @@ export const createAceite = async (req: Request, res: Response)=>{
     
     try {
 
-        const {marca, precio, stock, descripcion} = req.body;
+        const {id_producto, marca, precio, stock, descripcion} = req.body;
         console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
@@ -75,6 +75,7 @@ export const createAceite = async (req: Request, res: Response)=>{
             }
 
             await Aceite.create({
+                id_producto,
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -102,17 +103,17 @@ export const createAceite = async (req: Request, res: Response)=>{
 export const updateAceite = async (req: Request, res: Response)=>{
     try {
         
-        const {id} = req.params;
+        const {id_producto} = req.params;
         const { marca, precio, stock, descripcion } = req.body;
 
         let image;
         let image_public_id;
 
-        const producto = await Aceite.findByPk(id);
+        const producto = await Aceite.findByPk(id_producto);
 
         if(!producto){
             return res.status(404).json({
-                msg: 'No existe un producto con el id ' + id
+                msg: 'No existe un producto con el id ' + id_producto
             });
         }
 
@@ -136,7 +137,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
             }, 
             { 
                 where: {
-                    id: id,
+                    id: id_producto,
                 }
             }
         );
@@ -158,12 +159,12 @@ export const updateAceite = async (req: Request, res: Response)=>{
 export const deleteAceite = async (req: Request, res: Response)=>{
     try {
 
-        const { id } = req.params;
+        const { id_producto } = req.params;
 
-        const producto = await Aceite.findByPk( id );
+        const producto = await Aceite.findByPk( id_producto );
         if ( !producto) {
             return res.status(404).json({
-                msg: 'No existe un priducto con el id ' + id
+                msg: 'No existe un priducto con el id ' + id_producto
             });
         }
 

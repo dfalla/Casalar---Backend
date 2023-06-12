@@ -7,9 +7,9 @@ const validarCamposProducto_1 = require("../middlewares/validarCamposProducto");
 const router = (0, express_1.Router)();
 router.use(validar_jwt_1.validarJWT);
 router.get('/', controllers_1.getAccesoriosElectricos);
-router.get('/:id', controllers_1.getAccesorioElectrico);
+router.get('/:id_producto', controllers_1.getAccesorioElectrico);
 router.post('/', validarCamposProducto_1.validarProducto, controllers_1.createAccesorioElectrico);
-router.put('/:id', validarCamposProducto_1.validarProducto, controllers_1.updateAccesorioElectrico);
-router.delete('/:id', controllers_1.deleteAccesorioElectrico);
+router.put('/:id_producto', validarCamposProducto_1.validarProducto, controllers_1.updateAccesorioElectrico);
+router.delete('/:id_producto', controllers_1.deleteAccesorioElectrico);
 exports.default = router;
 //# sourceMappingURL=accesoriosElectricos.js.map

@@ -20,7 +20,7 @@ const getMotoguadanas = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const productos = yield models_1.Motoguadana.findAll();
         return res.json({
-            productos: productos.reverse()
+            productos
         });
     }
     catch (error) {
@@ -33,8 +33,8 @@ const getMotoguadanas = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.getMotoguadanas = getMotoguadanas;
 const getMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const producto = yield models_1.Motoguadana.findByPk(id);
+        const { id_producto } = req.params;
+        const producto = yield models_1.Motoguadana.findByPk(id_producto);
         if (!producto) {
             return res.status(404).json({
                 error: "No existe el producto"
@@ -54,7 +54,7 @@ const getMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getMotoguadana = getMotoguadana;
 const createMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { marca, precio, stock, descripcion } = req.body;
+        const { id_producto, marca, precio, stock, descripcion } = req.body;
         console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
@@ -76,6 +76,7 @@ const createMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 image_public_id = result.public_id;
             }
             yield models_1.Motoguadana.create({
+                id_producto,
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -101,14 +102,14 @@ const createMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.createMotoguadana = createMotoguadana;
 const updateMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
+        const { id_producto } = req.params;
         const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const producto = yield models_1.Motoguadana.findByPk(id);
+        const producto = yield models_1.Motoguadana.findByPk(id_producto);
         if (!producto) {
             return res.status(404).json({
-                msg: 'No existe un producto con el id ' + id
+                msg: 'No existe un producto con el id ' + id_producto
             });
         }
         yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
@@ -127,7 +128,7 @@ const updateMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, functi
             imagen_public_id: image_public_id,
         }, {
             where: {
-                id: id,
+                id: id_producto,
             }
         });
         res.json({
@@ -145,11 +146,11 @@ const updateMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.updateMotoguadana = updateMotoguadana;
 const deleteMotoguadana = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const producto = yield models_1.Motoguadana.findByPk(id);
+        const { id_producto } = req.params;
+        const producto = yield models_1.Motoguadana.findByPk(id_producto);
         if (!producto) {
             return res.status(404).json({
-                msg: 'No existe un priducto con el id ' + id
+                msg: 'No existe un priducto con el id ' + id_producto
             });
         }
         yield producto.destroy();

@@ -20,7 +20,7 @@ const getLlantas = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const productos = yield models_1.LLanta.findAll();
         return res.json({
-            productos: productos.reverse()
+            productos
         });
     }
     catch (error) {
@@ -33,8 +33,8 @@ const getLlantas = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getLlantas = getLlantas;
 const getLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const producto = yield models_1.LLanta.findByPk(id);
+        const { id_producto } = req.params;
+        const producto = yield models_1.LLanta.findByPk(id_producto);
         if (!producto) {
             return res.status(404).json({
                 error: "No existe el producto"
@@ -55,7 +55,7 @@ exports.getLlanta = getLlanta;
 const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("req.body desde el controlador", req.body);
     try {
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { id_producto, cantidad, marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
         try {
@@ -76,6 +76,7 @@ const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 image_public_id = result.public_id;
             }
             yield models_1.LLanta.create({
+                id_producto,
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 cantidad,
                 precio: parseFloat(precio),
@@ -102,14 +103,14 @@ const createLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.createLlanta = createLlanta;
 const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const { cantidad, marca, precio, stock, descripcion } = req.body;
+        const { id_producto } = req.params;
+        const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
-        const producto = yield models_1.LLanta.findByPk(id);
+        const producto = yield models_1.LLanta.findByPk(id_producto);
         if (!producto) {
             return res.status(404).json({
-                msg: 'No existe una producto con el id ' + id
+                msg: 'No existe un producto con el id ' + id_producto
             });
         }
         yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
@@ -119,9 +120,8 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             image = result.secure_url;
             image_public_id = result.public_id;
         }
-        yield models_1.LLanta.update({
+        yield producto.update({
             marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-            cantidad,
             precio: parseFloat(precio),
             stock,
             descripcion,
@@ -129,7 +129,7 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             imagen_public_id: image_public_id,
         }, {
             where: {
-                id: id,
+                id: id_producto,
             }
         });
         res.json({
@@ -147,11 +147,11 @@ const updateLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.updateLlanta = updateLlanta;
 const deleteLlanta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const producto = yield models_1.LLanta.findByPk(id);
+        const { id_producto } = req.params;
+        const producto = yield models_1.LLanta.findByPk(id_producto);
         if (!producto) {
             return res.status(404).json({
-                msg: 'No existe un producto con el id ' + id
+                msg: 'No existe un producto con el id ' + id_producto
             });
         }
         yield producto.destroy();

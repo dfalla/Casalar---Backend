@@ -9,7 +9,7 @@ export const getMotosierras = async (req: Request, res: Response)=>{
     try {
         const productos = await Motosierra.findAll();
         return res.json({
-            productos: productos.reverse()
+            productos
         });
     } catch (error) {
         console.log(error)
@@ -21,8 +21,8 @@ export const getMotosierras = async (req: Request, res: Response)=>{
 
 export const getMotosierra = async (req: Request, res: Response)=>{
     try {
-        const { id } = req.params;
-        const producto = await Motosierra.findByPk(id);
+        const { id_producto } = req.params;
+        const producto = await Motosierra.findByPk(id_producto);
 
         if(!producto) {
              return res.status(404).json({
@@ -46,7 +46,7 @@ export const createMotosierra = async (req: Request, res: Response)=>{
     
     try {
 
-        const {marca, precio, stock, descripcion} = req.body;
+        const {id_producto, marca, precio, stock, descripcion} = req.body;
         console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
@@ -75,6 +75,7 @@ export const createMotosierra = async (req: Request, res: Response)=>{
             }
 
             await Motosierra.create({
+                id_producto,
                 marca: marca.split('')[0].toUpperCase() + marca.slice(1),
                 precio: parseFloat(precio),
                 stock,
@@ -102,17 +103,18 @@ export const createMotosierra = async (req: Request, res: Response)=>{
 export const updateMotosierra = async (req: Request, res: Response)=>{
     try {
         
-        const {id} = req.params;
+        const {id_producto} = req.params;
+       
         const { marca, precio, stock, descripcion } = req.body;
 
         let image;
         let image_public_id;
 
-        const producto = await Motosierra.findByPk(id);
+        const producto = await Motosierra.findByPk(id_producto);
 
         if(!producto){
             return res.status(404).json({
-                msg: 'No existe un producto con el id ' + id
+                msg: 'No existe un producto con el id ' + id_producto
             });
         }
 
@@ -136,7 +138,7 @@ export const updateMotosierra = async (req: Request, res: Response)=>{
             }, 
             { 
                 where: {
-                    id: id,
+                    id: id_producto,
                 }
             }
         );
@@ -158,12 +160,12 @@ export const updateMotosierra = async (req: Request, res: Response)=>{
 export const deleteMotosierra = async (req: Request, res: Response)=>{
     try {
 
-        const { id } = req.params;
+        const { id_producto } = req.params;
 
-        const producto = await Motosierra.findByPk( id );
+        const producto = await Motosierra.findByPk( id_producto );
         if ( !producto) {
             return res.status(404).json({
-                msg: 'No existe un priducto con el id ' + id
+                msg: 'No existe un priducto con el id ' + id_producto
             });
         }
 

@@ -7,9 +7,9 @@ const router = Router();
 router.use( validarJWT );
 
 router.get('/', getAccesoriosElectricos)
-router.get('/:id', getAccesorioElectrico)
+router.get('/:id_producto', getAccesorioElectrico)
 router.post('/', validarProducto,   createAccesorioElectrico)
-router.put('/:id', validarProducto, updateAccesorioElectrico)
-router.delete('/:id', deleteAccesorioElectrico)
+router.put('/:id_producto', validarProducto, updateAccesorioElectrico)
+router.delete('/:id_producto', deleteAccesorioElectrico)
 
 export default router;
