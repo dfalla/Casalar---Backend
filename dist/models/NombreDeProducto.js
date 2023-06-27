@@ -11,6 +11,10 @@ exports.NombreProducto = connection_1.default.define('productos', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
+    value: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
 }, {
     freezeTableName: true
 });

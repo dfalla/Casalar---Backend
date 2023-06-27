@@ -49,7 +49,7 @@ const getNombreDeProducto = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.getNombreDeProducto = getNombreDeProducto;
 const createNombreDeProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nombre } = req.body;
+        const { nombre, value } = req.body;
         try {
             const existeProducto = yield models_1.NombreProducto.findOne({
                 where: {
@@ -63,6 +63,7 @@ const createNombreDeProducto = (req, res) => __awaiter(void 0, void 0, void 0, f
             }
             yield models_1.NombreProducto.create({
                 nombre: nombre.split('')[0].toUpperCase() + nombre.slice(1),
+                value,
             });
             res.json({
                 msg: `Producto registrado exitosamente!`

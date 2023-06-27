@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import { Aceite } from '../models';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
+import { getFecha } from '../helpers';
 
 
 export const getAceites = async (req: Request, res: Response)=>{
@@ -47,7 +48,8 @@ export const createAceite = async (req: Request, res: Response)=>{
     try {
 
         const {id_producto, marca, precio, stock, descripcion} = req.body;
-        console.log("req.body desde createAceite", req.body);
+        const { fecha, times_created } = getFecha();
+
         let image;
         let image_public_id;
 
@@ -64,7 +66,19 @@ export const createAceite = async (req: Request, res: Response)=>{
                 });
             }
 
-            if(req.files!.imagen){
+            if(req.files === null){
+                await Aceite.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    created_at: fecha,
+                    times_created,
+                })
+
+            } else {
+
                 const result = await uploadImage(req.files!.imagen.tempFilePath);
                
                 await fs.remove(req.files!.imagen.tempFilePath);
@@ -72,17 +86,19 @@ export const createAceite = async (req: Request, res: Response)=>{
                 image = result.secure_url;
     
                 image_public_id = result.public_id;
-            }
 
-            await Aceite.create({
-                id_producto,
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                precio: parseFloat(precio),
-                stock,
-                descripcion,
-                imagen: image,
-                imagen_public_id: image_public_id
-            })
+                await Aceite.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    imagen: image,
+                    imagen_public_id: image_public_id,
+                    created_at: fecha,
+                    times_created,
+                })
+            }
 
             res.json({
                 msg: `Producto registrado exitosamente!`
@@ -106,6 +122,7 @@ export const updateAceite = async (req: Request, res: Response)=>{
         const {id_producto} = req.params;
         const { marca, precio, stock, descripcion } = req.body;
 
+
         let image;
         let image_public_id;
 
@@ -117,31 +134,47 @@ export const updateAceite = async (req: Request, res: Response)=>{
             });
         }
 
-        await deleteImage(producto.dataValues.imagen_public_id)
+        if(req.files === null){
+            await producto.update( 
+                {
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                }, 
+                { 
+                    where: {
+                        id: id_producto,
+                    }
+                }
+            );
+        } else {
 
-        if(req.files!.imagen){
+            if(producto.dataValues.imagen_public_id){
+                await deleteImage(producto.dataValues.imagen_public_id)
+            }
+
             const result = await uploadImage(req.files!.imagen.tempFilePath);
             await fs.remove(req.files!.imagen.tempFilePath);
             image = result.secure_url;
             image_public_id = result.public_id;
-        }
 
-        await producto.update( 
-            {
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                precio: parseFloat(precio),
-                stock,
-                descripcion,
-                imagen: image,
-                imagen_public_id: image_public_id,
-            }, 
-            { 
-                where: {
-                    id: id_producto,
+            await producto.update( 
+                {
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    imagen: image,
+                    imagen_public_id: image_public_id,
+                }, 
+                { 
+                    where: {
+                        id: id_producto,
+                    }
                 }
-            }
-        );
-        
+            );
+        }
 
         res.json( {
             msg: "Producto actualizado correctamente",

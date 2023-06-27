@@ -20,6 +20,7 @@ const getFecha_1 = require("../helpers/getFecha");
 const getAccesoriosElectricos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productos = yield models_1.AccesorioElectrico.findAll();
+        // console.log("productos", productos);
         return res.json({
             productos: productos.reverse()
         });
@@ -36,6 +37,7 @@ const getAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0, fu
     try {
         const { id_producto } = req.params;
         const producto = yield models_1.AccesorioElectrico.findByPk(id_producto);
+        console.log("producto ⚽", producto);
         if (!producto) {
             return res.status(404).json({
                 error: "No existe el producto"
@@ -56,8 +58,7 @@ exports.getAccesorioElectrico = getAccesorioElectrico;
 const createAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_producto, marca, precio, stock, descripcion } = req.body;
-        const fecha = (0, getFecha_1.getFecha)();
-        console.log("req.body desde createAceite", req.body);
+        const { fecha, times_created } = (0, getFecha_1.getFecha)();
         let image;
         let image_public_id;
         try {
@@ -71,22 +72,34 @@ const createAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0,
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
             }
-            if (req.files.imagen) {
+            if (req.files === null) {
+                yield models_1.AccesorioElectrico.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    created_at: fecha,
+                    times_created
+                });
+            }
+            else {
                 const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
                 yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
                 image = result.secure_url;
                 image_public_id = result.public_id;
+                yield models_1.AccesorioElectrico.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    imagen: image,
+                    imagen_public_id: image_public_id,
+                    created_at: fecha,
+                    times_created
+                });
             }
-            yield models_1.AccesorioElectrico.create({
-                id_producto,
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                precio: parseFloat(precio),
-                stock,
-                descripcion,
-                imagen: image,
-                imagen_public_id: image_public_id,
-                created_at: fecha
-            });
             res.json({
                 msg: `Producto registrado exitosamente!`
             });
@@ -104,36 +117,54 @@ const createAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0,
 });
 exports.createAccesorioElectrico = createAccesorioElectrico;
 const updateAccesorioElectrico = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("file 🤑", req.files);
     try {
         const { id_producto } = req.params;
         const { marca, precio, stock, descripcion } = req.body;
         let image;
         let image_public_id;
         const producto = yield models_1.AccesorioElectrico.findByPk(id_producto);
+        console.log("producto ⚽", producto);
         if (!producto) {
             return res.status(404).json({
                 msg: 'No existe un producto con el id ' + id_producto
             });
         }
-        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
-        if (req.files.imagen) {
-            const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
-            yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
-            image = result.secure_url;
-            image_public_id = result.public_id;
+        if (req.files === null) {
+            yield producto.update({
+                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                precio: parseFloat(precio),
+                stock,
+                descripcion,
+            }, {
+                where: {
+                    id: id_producto,
+                }
+            });
         }
-        yield producto.update({
-            marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-            precio: parseFloat(precio),
-            stock,
-            descripcion,
-            imagen: image,
-            imagen_public_id: image_public_id,
-        }, {
-            where: {
-                id: id_producto,
+        else {
+            if (producto.dataValues.imagen_public_id) {
+                yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
             }
-        });
+            else {
+                const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
+                yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
+                image = result.secure_url;
+                image_public_id = result.public_id;
+                yield producto.update({
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    imagen: image,
+                    imagen_public_id: image_public_id,
+                }, {
+                    where: {
+                        id: id_producto,
+                    }
+                });
+            }
+        }
         res.json({
             msg: "Producto actualizado correctamente",
             producto

@@ -16,6 +16,7 @@ exports.deleteMotosierra = exports.updateMotosierra = exports.createMotosierra =
 const models_1 = require("../models");
 const cloudinary_1 = require("../libs/cloudinary");
 const fs_extra_1 = __importDefault(require("fs-extra"));
+const helpers_1 = require("../helpers");
 const getMotosierras = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productos = yield models_1.Motosierra.findAll();
@@ -55,7 +56,7 @@ exports.getMotosierra = getMotosierra;
 const createMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_producto, marca, precio, stock, descripcion } = req.body;
-        console.log("req.body desde createAceite", req.body);
+        const { fecha, times_created } = (0, helpers_1.getFecha)();
         let image;
         let image_public_id;
         try {
@@ -69,21 +70,34 @@ const createMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     msg: `Ya existe un producto con esa marca ${marca}`
                 });
             }
-            if (req.files.imagen) {
+            if (req.files === null) {
+                yield models_1.Motosierra.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    created_at: fecha,
+                    times_created,
+                });
+            }
+            else {
                 const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
                 yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
                 image = result.secure_url;
                 image_public_id = result.public_id;
+                yield models_1.Motosierra.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    imagen: image,
+                    imagen_public_id: image_public_id,
+                    created_at: fecha,
+                    times_created,
+                });
             }
-            yield models_1.Motosierra.create({
-                id_producto,
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                precio: parseFloat(precio),
-                stock,
-                descripcion,
-                imagen: image,
-                imagen_public_id: image_public_id
-            });
             res.json({
                 msg: `Producto registrado exitosamente!`
             });
@@ -112,25 +126,39 @@ const updateMotosierra = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 msg: 'No existe un producto con el id ' + id_producto
             });
         }
-        yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
-        if (req.files.imagen) {
+        if (req.files === null) {
+            yield producto.update({
+                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                precio: parseFloat(precio),
+                stock,
+                descripcion,
+            }, {
+                where: {
+                    id: id_producto,
+                }
+            });
+        }
+        else {
+            if (producto.dataValues.imagen_public_id) {
+                yield (0, cloudinary_1.deleteImage)(producto.dataValues.imagen_public_id);
+            }
             const result = yield (0, cloudinary_1.uploadImage)(req.files.imagen.tempFilePath);
             yield fs_extra_1.default.remove(req.files.imagen.tempFilePath);
             image = result.secure_url;
             image_public_id = result.public_id;
+            yield producto.update({
+                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                precio: parseFloat(precio),
+                stock,
+                descripcion,
+                imagen: image,
+                imagen_public_id: image_public_id,
+            }, {
+                where: {
+                    id: id_producto,
+                }
+            });
         }
-        yield producto.update({
-            marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-            precio: parseFloat(precio),
-            stock,
-            descripcion,
-            imagen: image,
-            imagen_public_id: image_public_id,
-        }, {
-            where: {
-                id: id_producto,
-            }
-        });
         res.json({
             msg: "Producto actualizado correctamente",
             producto

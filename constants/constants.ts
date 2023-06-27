@@ -24,14 +24,19 @@ export const product = {
     },
     imagen: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true, 
+
     },
     imagen_public_id: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     created_at: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    times_created: {
+        type: DataTypes.NUMBER,
         allowNull: false
     },
 }

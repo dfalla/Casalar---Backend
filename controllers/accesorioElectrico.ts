@@ -9,6 +9,7 @@ export const getAccesoriosElectricos = async (req: Request, res: Response)=>{
 
     try {
         const productos = await AccesorioElectrico.findAll();
+        // console.log("productos", productos);
         return res.json({
             productos: productos.reverse()
         });
@@ -24,6 +25,8 @@ export const getAccesorioElectrico = async (req: Request, res: Response)=>{
     try {
         const { id_producto } = req.params;
         const producto = await AccesorioElectrico.findByPk(id_producto);
+        console.log("producto ⚽", producto);
+
 
         if(!producto) {
              return res.status(404).json({
@@ -49,9 +52,8 @@ export const createAccesorioElectrico = async (req: Request, res: Response)=>{
 
         const {id_producto, marca, precio, stock, descripcion} = req.body;
 
-        const fecha = getFecha()
+        const { fecha, times_created } = getFecha();
 
-        console.log("req.body desde createAceite", req.body);
         let image;
         let image_public_id;
 
@@ -68,7 +70,18 @@ export const createAccesorioElectrico = async (req: Request, res: Response)=>{
                 });
             }
 
-            if(req.files!.imagen){
+            if(req.files === null){
+                await AccesorioElectrico.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    created_at: fecha,
+                    times_created
+                })
+    
+            } else {
                 const result = await uploadImage(req.files!.imagen.tempFilePath);
                
                 await fs.remove(req.files!.imagen.tempFilePath);
@@ -76,18 +89,19 @@ export const createAccesorioElectrico = async (req: Request, res: Response)=>{
                 image = result.secure_url;
     
                 image_public_id = result.public_id;
-            }
 
-            await AccesorioElectrico.create({
-                id_producto,
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                precio: parseFloat(precio),
-                stock,
-                descripcion,
-                imagen: image,
-                imagen_public_id: image_public_id, 
-                created_at: fecha
-            })
+                await AccesorioElectrico.create({
+                    id_producto,
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                    imagen: image,
+                    imagen_public_id: image_public_id, 
+                    created_at: fecha,
+                    times_created
+                })
+            }
 
             res.json({
                 msg: `Producto registrado exitosamente!`
@@ -106,6 +120,7 @@ export const createAccesorioElectrico = async (req: Request, res: Response)=>{
 }
 
 export const updateAccesorioElectrico = async (req: Request, res: Response)=>{
+    console.log("file 🤑", req.files)
     try {
         
         const {id_producto} = req.params;
@@ -116,6 +131,7 @@ export const updateAccesorioElectrico = async (req: Request, res: Response)=>{
         let image_public_id;
 
         const producto = await AccesorioElectrico.findByPk(id_producto);
+        console.log("producto ⚽", producto);
 
         if(!producto){
             return res.status(404).json({
@@ -123,37 +139,56 @@ export const updateAccesorioElectrico = async (req: Request, res: Response)=>{
             });
         }
 
-        await deleteImage(producto.dataValues.imagen_public_id)
-
-        if(req.files!.imagen){
-            const result = await uploadImage(req.files!.imagen.tempFilePath);
-            await fs.remove(req.files!.imagen.tempFilePath);
-            image = result.secure_url;
-            image_public_id = result.public_id;
-        }
-
-        await producto.update( 
-            {
-                marca: marca.split('')[0].toUpperCase() + marca.slice(1),
-                precio: parseFloat(precio),
-                stock,
-                descripcion,
-                imagen: image,
-                imagen_public_id: image_public_id,
-            }, 
-            { 
-                where: {
-                    id: id_producto,
+        if(req.files === null){
+            await producto.update(
+                {
+                    marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                    precio: parseFloat(precio),
+                    stock,
+                    descripcion,
+                }, 
+                { 
+                    where: {
+                        id: id_producto,
+                    }
                 }
+            );
+
+        } else {
+
+            if(producto.dataValues.imagen_public_id){
+                await deleteImage(producto.dataValues.imagen_public_id)
+            } else {
+                
+                const result = await uploadImage(req.files!.imagen.tempFilePath);
+                await fs.remove(req.files!.imagen.tempFilePath);
+                image = result.secure_url;
+                image_public_id = result.public_id;
+
+                await producto.update( 
+                    {
+                        marca: marca.split('')[0].toUpperCase() + marca.slice(1),
+                        precio: parseFloat(precio),
+                        stock,
+                        descripcion,
+                        imagen: image,
+                        imagen_public_id: image_public_id,
+                    }, 
+                    { 
+                        where: {
+                            id: id_producto,
+                        }
+                    }
+                );
             }
-        );
-        
+        }
 
         res.json( {
             msg: "Producto actualizado correctamente",
             producto
         } );
 
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({

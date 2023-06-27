@@ -7,6 +7,10 @@ export const NombreProducto = db.define('productos', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    value: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 }, {
     freezeTableName: true
 })

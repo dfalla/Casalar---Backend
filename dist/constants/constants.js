@@ -26,14 +26,18 @@ exports.product = {
     },
     imagen: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
     },
     imagen_public_id: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     created_at: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    times_created: {
+        type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
     },
 };

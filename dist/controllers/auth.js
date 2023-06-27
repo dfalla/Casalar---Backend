@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.revalidarToken = exports.loginUser = exports.registerUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const jwt_1 = require("../helpers/jwt");
+const helpers_1 = require("../helpers");
 const models_1 = require("../models");
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre, apellido, username, password } = req.body;
@@ -35,7 +35,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             username: username,
             password: hashedPassword
         });
-        const token = yield (0, jwt_1.generarJWT)({ uid: usuario.dataValues.id, name: usuario.dataValues.nombre });
+        const token = yield (0, helpers_1.generarJWT)({ uid: usuario.dataValues.id, name: usuario.dataValues.nombre });
         res.json({
             msg: `Usuario ${username} creado exitosamente!`,
             nombre: usuario.dataValues.nombre,
@@ -71,7 +71,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         // Generamos token
-        const token = yield (0, jwt_1.generarJWT)({ uid: user.id, name: user.nombre });
+        const token = yield (0, helpers_1.generarJWT)({ uid: user.id, name: user.nombre });
         res.json({
             ok: true,
             msg: 'Usuario Logueado',
@@ -93,7 +93,7 @@ exports.loginUser = loginUser;
 const revalidarToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { uid, name } = req.body;
     //generar un nuevo JWT y retornarlo en esta peticion
-    const token = yield (0, jwt_1.generarJWT)({ uid, name });
+    const token = yield (0, helpers_1.generarJWT)({ uid, name });
     res.json({
         ok: true,
         name,

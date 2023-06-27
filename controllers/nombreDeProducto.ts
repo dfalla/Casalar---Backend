@@ -46,7 +46,7 @@ export const createNombreDeProducto = async (req: Request, res: Response)=>{
     
     try {
 
-        const { nombre } = req.body;
+        const { nombre, value } = req.body;
 
         try {
             const existeProducto = await NombreProducto.findOne({
@@ -63,6 +63,7 @@ export const createNombreDeProducto = async (req: Request, res: Response)=>{
 
             await NombreProducto.create({
                 nombre: nombre.split('')[0].toUpperCase() + nombre.slice(1),
+                value,
                
             })
 
