@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { AccesorioElectrico } from '../models';
+import { Venta } from '../models';
 import { deleteImage, uploadImage } from '../libs/cloudinary';
 import fs from 'fs-extra';
 import { getFecha } from '../helpers/getFecha';
@@ -47,7 +47,17 @@ import { getFecha } from '../helpers/getFecha';
 // }
 
 export const createVenta = async (req: Request, res: Response)=>{
-    console.log("venta a registrar 😁", req.body)
+    // const arr = Object.values(req.body);
+    console.log("array", req.body);
+    // console.log("venta a registrar 😁", req.body)
+    try {
+       const respuesta = await Venta.bulkCreate(req.body)
+       console.log("respuesta", respuesta)
+        res.status(200).json({ message: 'Datos guardados exitosamente' });
+    } catch (error) {
+        console.error('Error al guardar los datos:', error);
+        res.status(500).json({ error: 'Error al guardar los datos' });
+    }
     
     // try {
 

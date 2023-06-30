@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createVenta = void 0;
+const models_1 = require("../models");
 // export const getAccesoriosElectricos = async (req: Request, res: Response)=>{
 //     try {
 //         const productos = await AccesorioElectrico.findAll();
@@ -45,7 +46,18 @@ exports.createVenta = void 0;
 //     }
 // }
 const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("venta a registrar 😁", req.body);
+    // const arr = Object.values(req.body);
+    console.log("array", req.body);
+    // console.log("venta a registrar 😁", req.body)
+    try {
+        const respuesta = yield models_1.Venta.bulkCreate(req.body);
+        console.log("respuesta", respuesta);
+        res.status(200).json({ message: 'Datos guardados exitosamente' });
+    }
+    catch (error) {
+        console.error('Error al guardar los datos:', error);
+        res.status(500).json({ error: 'Error al guardar los datos' });
+    }
     // try {
     //     const {id_producto, marca, precio, stock, descripcion} = req.body;
     //     const { fecha, times_created } = getFecha();

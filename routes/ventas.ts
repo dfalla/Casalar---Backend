@@ -8,7 +8,7 @@ router.use( validarJWT );
 
 // router.get('/', getNombresDeProductos)
 // router.get('/:id', getNombreDeProducto)
-router.post('/', validarVenta,   createVenta)
+router.post('/', createVenta)
 // router.put('/:id', validarNombreDeProducto, updateNombreDeProducto)
 // router.delete('/:id', deleteNombreDeProducto)
 
