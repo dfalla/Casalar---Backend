@@ -25,6 +25,7 @@ const motosierras_1 = __importDefault(require("../routes/motosierras"));
 const motoguadanas_1 = __importDefault(require("../routes/motoguadanas"));
 const accesoriosElectricos_1 = __importDefault(require("../routes/accesoriosElectricos"));
 const nombreDeProductos_1 = __importDefault(require("../routes/nombreDeProductos"));
+const ventas_1 = __importDefault(require("../routes/ventas"));
 class Server {
     constructor() {
         this.apiPaths = {
@@ -36,7 +37,8 @@ class Server {
             motosierras: '/api/motosierras',
             motoguadanas: '/api/motoguadanas',
             accesoriosElectricos: '/api/accesorios-electricos',
-            nombresDeProductos: '/api/productos'
+            nombresDeProductos: '/api/productos',
+            ventas: '/api/ventas'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -72,6 +74,7 @@ class Server {
         this.app.use(this.apiPaths.motoguadanas, motoguadanas_1.default);
         this.app.use(this.apiPaths.accesoriosElectricos, accesoriosElectricos_1.default);
         this.app.use(this.apiPaths.nombresDeProductos, nombreDeProductos_1.default);
+        this.app.use(this.apiPaths.ventas, ventas_1.default);
     }
     middlewares() {
         this.app.use((0, express_fileupload_1.default)({

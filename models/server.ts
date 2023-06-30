@@ -11,6 +11,7 @@ import motosierrasRoutes from '../routes/motosierras';
 import motoguadanasRoutes from '../routes/motoguadanas';
 import accesoriosElectricosRoutes from '../routes/accesoriosElectricos';
 import nombresDeProductosRoutes from '../routes/nombreDeProductos';
+import ventasRoutes from '../routes/ventas'
 
 
 
@@ -28,10 +29,8 @@ class Server {
         motosierras            : '/api/motosierras',
         motoguadanas           : '/api/motoguadanas',
         accesoriosElectricos   : '/api/accesorios-electricos',
-        nombresDeProductos     : '/api/productos'
-
-
-
+        nombresDeProductos     : '/api/productos',
+        ventas                 : '/api/ventas'
     }
 
     constructor() {
@@ -74,6 +73,8 @@ class Server {
         this.app.use( this.apiPaths.motoguadanas, motoguadanasRoutes );
         this.app.use( this.apiPaths.accesoriosElectricos, accesoriosElectricosRoutes );
         this.app.use( this.apiPaths.nombresDeProductos, nombresDeProductosRoutes );
+        this.app.use( this.apiPaths.ventas, ventasRoutes );
+
 
     }
 

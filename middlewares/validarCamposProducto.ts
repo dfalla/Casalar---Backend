@@ -9,7 +9,7 @@ export const validarProducto = [
     check("precio", "Ingrese un precio ")
         .trim()
         .notEmpty(),
-    check("stock", "Ingrese un si o no ")
+    check("stock", "Ingrese un stock ")
         .trim()
         .notEmpty(),
     check("descripcion", "Ingrese una descripcion ")
@@ -25,4 +25,22 @@ export const validarNombreDeProducto = [
         .trim()
         .notEmpty(),
     validarCampos,
+]
+
+export const validarVenta = [
+    check("cantidad", "Ingrese una cantidad")
+        .isNumeric()
+        .trim()
+        .notEmpty(),
+    check("subtotal", "Ingrese una cantidad")
+        .isDecimal()
+        .trim()
+        .notEmpty(),
+    check("marca", "Ingrese una cantidad")
+        .trim()
+        .notEmpty(),
+    check("producto", "Ingrese una cantidad")
+        .trim()
+        .notEmpty(),
+    validarCampos
 ]

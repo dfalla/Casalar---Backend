@@ -41,6 +41,26 @@ export const product = {
     },
 }
 
+export const venta = {
+    id_venta: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
+    },
+    cantidad: {
+        type: DataTypes.NUMBER,
+        allowNull: false
+    },
+    marca: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    subtotal: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
+}
+
 export const accesorio_electrico_product = {
     id_accesorio_electrico: {
         type: DataTypes.STRING,

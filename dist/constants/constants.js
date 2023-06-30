@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.motosierra_product = exports.motor_product = exports.motoguadana_product = exports.mochila_fumigadora_product = exports.llanta_product = exports.aceite_product = exports.accesorio_electrico_product = exports.product = void 0;
+exports.motosierra_product = exports.motor_product = exports.motoguadana_product = exports.mochila_fumigadora_product = exports.llanta_product = exports.aceite_product = exports.accesorio_electrico_product = exports.venta = exports.product = void 0;
 const sequelize_1 = require("sequelize");
 exports.product = {
     id_producto: {
@@ -38,6 +38,25 @@ exports.product = {
     },
     times_created: {
         type: sequelize_1.DataTypes.NUMBER,
+        allowNull: false
+    },
+};
+exports.venta = {
+    id_venta: {
+        type: sequelize_1.DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
+    },
+    cantidad: {
+        type: sequelize_1.DataTypes.NUMBER,
+        allowNull: false
+    },
+    marca: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    subtotal: {
+        type: sequelize_1.DataTypes.DOUBLE,
         allowNull: false
     },
 };

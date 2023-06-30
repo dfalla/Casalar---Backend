@@ -23,4 +23,5 @@ __exportStar(require("./motoguadana"), exports);
 __exportStar(require("./motor"), exports);
 __exportStar(require("./motosierra"), exports);
 __exportStar(require("./nombreDeProducto"), exports);
+__exportStar(require("./venta"), exports);
 //# sourceMappingURL=index.js.map
