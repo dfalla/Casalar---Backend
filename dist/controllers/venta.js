@@ -9,8 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createVenta = void 0;
+exports.createVenta = exports.getAllVentas = void 0;
 const models_1 = require("../models");
+const getAllVentas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const ventas = yield models_1.Venta.findAll();
+        // console.log("productos", productos)
+        return res.json({
+            ventas
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            error: 'Error de servidor'
+        });
+    }
+});
+exports.getAllVentas = getAllVentas;
 const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { ventas } = req.body;
     const arrVentas = JSON.parse(ventas);

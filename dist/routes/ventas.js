@@ -5,7 +5,7 @@ const controllers_1 = require("../controllers");
 const validar_jwt_1 = require("../middlewares/validar-jwt");
 const router = (0, express_1.Router)();
 router.use(validar_jwt_1.validarJWT);
-// router.get('/', getNombresDeProductos)
+router.get('/', controllers_1.getAllVentas);
 // router.get('/:id', getNombreDeProducto)
 router.post('/', controllers_1.createVenta);
 // router.put('/:id', validarNombreDeProducto, updateNombreDeProducto)
